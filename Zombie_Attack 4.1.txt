@@ -1,0 +1,2132 @@
+function InitGlobals2 takes nothing returns nothing
+    local integer i = 0    
+    // Inicializar arrays
+    loop
+        exitwhen i > 1        
+        // Strings y booleans
+        set udg_strings01[i] = ""
+        set udg_booleans01[i] = false
+        set udg_booleans02[i] = false
+        set udg_booleans03[i] = false
+        set udg_booleans04[i] = false        
+        // Units
+        set udg_units03[i] = null        
+        // Integers
+        set udg_integers01[i] = 0
+        set udg_integers02[i] = 0
+        set udg_integers03[i] = 0
+        set udg_integers04[i] = 0
+        set udg_integers05[i] = 0
+        set udg_integers06[i] = 0
+        set udg_integers07[i] = 0
+        set udg_integers08[i] = 0
+        set udg_integers09[i] = 0
+        set udg_integers10[i] = 0
+        set udg_integers11[i] = 0
+        set udg_integers12[i] = 0
+        set udg_integers13[i] = 0
+        set udg_integers14[i] = 0
+        set udg_integers15[i] = 0
+        set udg_integers16[i] = 0
+        set udg_integers17[i] = 0
+        set udg_integers18[i] = 0
+        set udg_integers19[i] = 0
+        set udg_integers20[i] = 0
+        set udg_integers21[i] = 0
+        set udg_integers22[i] = 0
+        set udg_integers23[i] = 0
+        set udg_integers24[i] = 0
+        set udg_integers25[i] = 0
+        set udg_integers26[i] = 0
+        set udg_integers27[i] = 0
+        set udg_integers28[i] = 0
+        set udg_integers29[i] = 0
+        set udg_integers31[i] = 0        
+        set i = i + 1
+    endloop    
+    // Crear objetos globales
+    set udg_dialog01 = DialogCreate()
+    set udg_dialog02 = DialogCreate()
+    set udg_timer01 = CreateTimer()
+    set udg_timer02 = CreateTimer()
+    set udg_force01 = CreateForce()
+    set udg_group01 = CreateGroup()
+endfunction
+
+function CreateNeutralPassiveBuildings2 takes nothing returns nothing
+    local player p = Player(15) // Player 15 ($F en hexadecimal)
+    local unit u
+    
+    set u = CreateUnit(p, 'n00G', 4960., -3808., 270.)
+    set u = null    
+    set udg_unit05 = CreateUnit(p, 'n001', 5952., -5952., 270.)
+    call SetUnitColor(udg_unit05, ConvertPlayerColor(0))    
+    set u = CreateUnit(p, 'n00G', 4128., 4192., 270.)
+    set u = null
+    set p = null
+endfunction
+
+function CreatePlayerBuildings2 takes nothing returns nothing
+    local player p = Player(11) // Player 11 ($B en hexadecimal)    
+    // Zona 3
+    set udg_unit06 = CreateUnit(p, 'h01O', -5824., -3392., 270.)
+    set udg_unit07 = CreateUnit(p, 'h01O', -5824., -2944., 270.)
+    set udg_unit08 = CreateUnit(p, 'h01O', -5824., -2496., 270.)
+    set udg_unit17 = CreateUnit(p, 'h01O', -5074., -3356., 270.)    
+    // Zona 2
+    set udg_unit09 = CreateUnit(p, 'h01O', 2176., 4800., 270.)
+    set udg_unit10 = CreateUnit(p, 'h01O', 2176., 3776., 270.)
+    set udg_unit11 = CreateUnit(p, 'h01O', 2176., 4288., 270.)
+    set udg_unit16 = CreateUnit(p, 'h01O', 1500., 3800., 270.)    
+    // Zona 1
+    set udg_unit12 = CreateUnit(p, 'h01O', -5824., 5824., 270.)
+    set udg_unit13 = CreateUnit(p, 'h01O', -5824., 5312., 270.)
+    set udg_unit14 = CreateUnit(p, 'h01O', -5824., 4416., 270.)
+    set udg_unit15 = CreateUnit(p, 'h01O', -5824., 4672., 270.)    
+    set p = null
+endfunction
+
+function TipsCallback takes nothing returns nothing
+    local integer random = GetRandomInt(0, 5)
+    local string message = ""
+    
+    if random == 0 then
+        set message = udg_strings01[10] + "[Tip] Para ganar la partida debes destruir todos los Zombie Towers."
+    elseif random == 1 then
+        set message = udg_strings01[10] + "[Tip] Ganaras oro mantando zombies y animales."
+    elseif random == 2 then
+        set message = udg_strings01[10] + "[Tip] Si quieres mejorar a tu heroe tipea -H."
+    elseif random == 3 then
+        set message = udg_strings01[10] + "[Tip] Si quieres todos los comandos de quest, tipea -CMD."
+    elseif random == 4 then
+        set message = udg_strings01[10] + "[Tip] Cada cierto tiempo aparecerá un boss en el mapa, Hay un total de 22 bosses."
+    else
+        set message = udg_strings01[10] + "[Tip] El primero que muere es gay."
+    endif    
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, message)
+endfunction
+
+function Trig_Tips_Actions takes nothing returns nothing
+    local timer t = CreateTimer()    
+    // Mostrar primer tip inmediatamente
+    call TipsCallback()    
+    // Repetir cada 60 segundos indefinidamente
+    call TimerStart(t, 60.0, true, function TipsCallback)
+endfunction
+
+function Trig_poison_ward_l1_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetTriggerUnit()) == 'h01G'
+endfunction
+
+function Trig_poison_ward_l1_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01F', 0, GetOwningPlayer(GetTriggerUnit()))
+endfunction
+
+function Trig_poison_ward_l2_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetTriggerUnit()) == 'h01H'
+endfunction
+
+function Trig_poison_ward_l2_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01G', 0, GetOwningPlayer(GetTriggerUnit()))
+endfunction
+
+function Trig_poison_ward_l3_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetTriggerUnit()) == 'h01I'
+endfunction
+
+function Trig_poison_ward_l3_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01H', 0, GetOwningPlayer(GetTriggerUnit()))
+endfunction
+
+function Trig_poison_ward_l4_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetTriggerUnit()) == 'h01J'
+endfunction
+
+function Trig_poison_ward_l4_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01I', 0, GetOwningPlayer(GetTriggerUnit()))
+endfunction
+
+function Trig_poison_ward_dies_l1_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetDyingUnit()) == 'h01G'
+endfunction
+
+function Trig_poison_ward_dies_l1_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01F', 1, GetOwningPlayer(GetDyingUnit()))
+endfunction
+
+function Trig_poison_ward_dies_l2_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetDyingUnit()) == 'h01H'
+endfunction
+
+function Trig_poison_ward_dies_l2_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01F', 1, GetOwningPlayer(GetDyingUnit()))
+    call SetPlayerTechMaxAllowedSwap('h01G', 1, GetOwningPlayer(GetDyingUnit()))
+endfunction
+
+function Trig_poison_ward_dies_l3_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetDyingUnit()) == 'h01I'
+endfunction
+
+function Trig_poison_ward_dies_l3_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01F', 1, GetOwningPlayer(GetDyingUnit()))
+    call SetPlayerTechMaxAllowedSwap('h01G', 1, GetOwningPlayer(GetDyingUnit()))
+    call SetPlayerTechMaxAllowedSwap('h01H', 1, GetOwningPlayer(GetDyingUnit()))
+endfunction
+
+function Trig_poison_ward_dies_l4_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetDyingUnit()) == 'h01J'
+endfunction
+
+function Trig_poison_ward_dies_l4_Actions takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01F', 1, GetOwningPlayer(GetDyingUnit()))
+    call SetPlayerTechMaxAllowedSwap('h01G', 1, GetOwningPlayer(GetDyingUnit()))
+    call SetPlayerTechMaxAllowedSwap('h01H', 1, GetOwningPlayer(GetDyingUnit()))
+    call SetPlayerTechMaxAllowedSwap('h01I', 1, GetOwningPlayer(GetDyingUnit()))
+endfunction
+
+function Trig_Regrow_Trees_Func001003001 takes nothing returns boolean
+    return GetDestructableTypeId(GetEnumDestructable()) == 'ATtc'
+endfunction
+
+function Trig_Regrow_Trees_Func001003 takes nothing returns nothing
+    if Trig_Regrow_Trees_Func001003001() then
+        call DestructableRestoreLife(GetEnumDestructable(), GetDestructableMaxLife(GetEnumDestructable()), true)
+    endif
+endfunction
+
+function Trig_Regrow_Trees_Actions takes nothing returns nothing
+    call EnumDestructablesInCircleBJ(999999., GetRectCenter(bj_mapInitialPlayableArea), function Trig_Regrow_Trees_Func001003)
+endfunction
+
+function FogEnableCallback takes nothing returns nothing
+    call FogEnableOn()
+    call DestroyTimer(GetExpiredTimer())
+endfunction
+
+function Trig_visibility_Actions takes nothing returns nothing
+    local timer t = CreateTimer()    
+    call FogEnableOff()
+    call TimerStart(t, 0.25, false, function FogEnableCallback)
+endfunction
+// Seccion comapctada y optimizada
+function IsUnitAliveAndChat takes string chatCommand returns boolean
+    return IsUnitAliveBJ(udg_units01[(1 + GetPlayerId(GetTriggerPlayer())]) 
+           and IsUnitAliveBJ(udg_units03[(1 + GetPlayerId(GetTriggerPlayer())]) 
+           and GetEventPlayerChatString() == chatCommand
+endfunction
+
+function Trig_move_item_Func001C takes nothing returns boolean
+    return IsUnitAliveAndChat("-moveitem 1")
+endfunction
+
+function Trig_move_item_Func002C takes nothing returns boolean
+    return IsUnitAliveAndChat("-moveitem 2")
+endfunction
+
+function Trig_move_item_Func003C takes nothing returns boolean
+    return IsUnitAliveAndChat("-moveitem 3")
+endfunction
+
+function Trig_move_item_Func004C takes nothing returns boolean
+    return IsUnitAliveAndChat("-moveitem 4")
+endfunction
+
+function Trig_move_item_Func005C takes nothing returns boolean
+    return IsUnitAliveAndChat("-moveitem 5")
+endfunction
+
+function Trig_move_item_Func006C takes nothing returns boolean
+    return IsUnitAliveAndChat("-moveitem 6")
+endfunction
+
+function Trig_move_item_Func007C takes nothing returns boolean
+    return IsUnitAliveAndChat("-moveallitems")
+endfunction
+
+function Trig_move_item_Actions takes nothing returns nothing
+    local integer playerId = GetPlayerId(GetTriggerPlayer())
+    local string successMsg = udg_strings01[$A] + "You successfully moved your items to chest.|r"
+    
+    if Trig_move_item_Func007C() then
+        call UnitAddItem(udg_units03[(1 + playerId)], UnitItemInSlotBJ(udg_units01[(1 + playerId)], 1))
+        call UnitAddItem(udg_units03[(1 + playerId)], UnitItemInSlotBJ(udg_units01[(1 + playerId)], 2))
+        call UnitAddItem(udg_units03[(1 + playerId)], UnitItemInSlotBJ(udg_units01[(1 + playerId)], 3))
+        call UnitAddItem(udg_units03[(1 + playerId)], UnitItemInSlotBJ(udg_units01[(1 + playerId)], 4))
+        call UnitAddItem(udg_units03[(1 + playerId)], UnitItemInSlotBJ(udg_units01[(1 + playerId)], 5))
+        call UnitAddItem(udg_units03[(1 + playerId)], UnitItemInSlotBJ(udg_units01[(1 + playerId)], 6))
+        call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()), successMsg)
+    else
+        for integer i = 1 to 6 do
+            if IsUnitAliveAndChat("-moveitem " + I2S(i)) then
+                call UnitAddItem(udg_units03[(1 + playerId)], UnitItemInSlotBJ(udg_units01[(1 + playerId)], i))
+                call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()), successMsg)
+            endif
+        endfor
+    endif
+endfunction
+
+function Trig_take_item_Func001C takes nothing returns boolean
+    return IsUnitAliveAndChat("-takeitem 1")
+endfunction
+
+function Trig_take_item_Func002C takes nothing returns boolean
+    return IsUnitAliveAndChat("-takeitem 2")
+endfunction
+
+function Trig_take_item_Func003C takes nothing returns boolean
+    return IsUnitAliveAndChat("-takeitem 3")
+endfunction
+
+function Trig_take_item_Func004C takes nothing returns boolean
+    return IsUnitAliveAndChat("-takeitem 4")
+endfunction
+
+function Trig_take_item_Func005C takes nothing returns boolean
+    return IsUnitAliveAndChat("-takeitem 5")
+endfunction
+
+function Trig_take_item_Func006C takes nothing returns boolean
+    return IsUnitAliveAndChat("-takeitem 6")
+endfunction
+
+function Trig_take_item_Func007C takes nothing returns boolean
+    return IsUnitAliveAndChat("-takeallitems")
+endfunction
+
+function Trig_take_item_Actions takes nothing returns nothing
+    local integer playerId = GetPlayerId(GetTriggerPlayer())
+    local string successMsg = udg_strings01[$A] + "You successfully took your items from chest.|r"
+
+    if Trig_take_item_Func007C() then
+        for integer i = 1 to 6 do
+            call UnitAddItem(udg_units01[(1 + playerId)], UnitItemInSlotBJ(udg_units03[(1 + playerId)], i))
+        endfor
+        call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()), successMsg)
+    else
+        for integer i = 1 to 6 do
+            if IsUnitAliveAndChat("-takeitem " + I2S(i)) then
+                call UnitAddItem(udg_units01[(1 + playerId)], UnitItemInSlotBJ(udg_units03[(1 + playerId)], i))
+                call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()), successMsg)
+            endif
+        endfor
+    endif
+endfunction
+
+function Trig_dropp_pick_items_Func001C takes nothing returns boolean
+    return IsUnitAliveAndChat("-dropitem 1")
+endfunction
+
+function Trig_dropp_pick_items_Func002C takes nothing returns boolean
+    return IsUnitAliveAndChat("-dropitem 2")
+endfunction
+
+function Trig_dropp_pick_items_Func003C takes nothing returns boolean
+    return IsUnitAliveAndChat("-dropitem 3")
+endfunction
+
+function Trig_dropp_pick_items_Func004C takes nothing returns boolean
+    return IsUnitAliveAndChat("-dropitem 4")
+endfunction
+
+function Trig_dropp_pick_items_Func005C takes nothing returns boolean
+    return IsUnitAliveAndChat("-dropitem 5")
+endfunction
+
+function Trig_dropp_pick_items_Func006C takes nothing returns boolean
+    return IsUnitAliveAndChat("-dropitem 6")
+endfunction
+
+function Trig_dropp_pick_items_Func007C takes nothing returns boolean
+    return IsUnitAliveAndChat("-dropallitems")
+endfunction
+
+function Trig_dropp_pick_items_Func008Func002A takes nothing returns nothing
+    call UnitAddItem(udg_units03[(1 + GetPlayerId(GetTriggerPlayer()))], GetEnumItem())
+endfunction
+
+function Trig_dropp_pick_items_Func008C takes nothing returns boolean
+    return IsUnitAliveAndChat("-pickallitems")
+endfunction
+
+function Trig_dropp_pick_items_Actions takes nothing returns nothing
+    local integer playerId = GetPlayerId(GetTriggerPlayer())
+    local string successMsg = udg_strings01[$A] + "You successfully dropped your item from chest.|r"
+
+    for integer i = 1 to 6 do
+        if IsUnitAliveAndChat("-dropitem " + I2S(i)) then
+            call UnitRemoveItemSwapped(UnitItemInSlotBJ(udg_units03[(1 + playerId)], i), udg_units03[(1 + playerId)])
+            call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()), successMsg)
+        endif
+    endfor
+
+    if Trig_dropp_pick_items_Func007C() then
+        for integer i = 1 to 6 do
+            call UnitRemoveItemSwapped(UnitItemInSlotBJ(udg_units03[(1 + playerId)], i), udg_units03[(1 + playerId)])
+        endfor
+        call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()), (udg_strings01[$A] + "You successfully dropped your items from chest.|r"))
+    endif
+
+    if Trig_dropp_pick_items_Func008C() then
+        call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()), (udg_strings01[$A] + "You successfully picked your items near chest.|r"))
+        call EnumItemsInRectBJ(RectFromCenterSizeBJ(GetUnitLoc(udg_units03[(1 + playerId)]), 250., 250.), function Trig_dropp_pick_items_Func008Func002A)
+    endif
+endfunction
+// ===============================================================================================================================
+// Seccion comapctada y optimizada
+function Trig_hero_kill_sansa_carte_animale_Conditions takes nothing returns boolean
+    return IsUnitType(GetKillingUnit(), UNIT_TYPE_HERO) and GetOwningPlayer(GetDyingUnit()) == Player($F)
+endfunction
+
+function Trig_hero_kill_sansa_carte_animale_Func002Func001 takes nothing returns boolean
+    return udg_integer14 == 1
+endfunction
+
+function Trig_hero_kill_sansa_carte_animale_Func002C takes nothing returns boolean
+    return udg_integer13 == 12
+endfunction
+
+function Trig_hero_kill_sansa_carte_animale_Actions takes nothing returns nothing
+    local integer itemId
+    set udg_integer13 = GetRandomInt(1, 12)
+    if Trig_hero_kill_sansa_carte_animale_Func002C() then
+        set udg_integer14 = GetRandomInt(1, 8)
+        if udg_integer14 == 1 then set itemId = 'I031'
+        elseif udg_integer14 == 2 then set itemId = 'I02X'
+        elseif udg_integer14 == 3 then set itemId = 'I02Y'
+        elseif udg_integer14 == 4 then set itemId = 'I02Z'
+        elseif udg_integer14 == 5 then set itemId = 'I030'
+        elseif udg_integer14 == 6 then set itemId = 'I033'
+        elseif udg_integer14 == 7 then set itemId = 'I036'
+        endif
+        if itemId != 0 then
+            call CreateItemLoc(itemId, GetUnitLoc(GetDyingUnit()))
+        endif
+    endif
+endfunction
+// ===============================================================================================================================
+function Trig_zombie_kill_effects_Conditions takes nothing returns boolean
+    local player p = GetOwningPlayer(GetDyingUnit())
+    return (p == Player(10) or p == Player(11))
+endfunction
+
+function Trig_zombie_kill_effects_Actions takes nothing returns nothing
+    local effect e = AddSpecialEffectTarget("Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl", GetDyingUnit(), "origin")
+    call DestroyEffect(e)
+    set e = null
+endfunction
+
+function Trig_no_build_in_trees_Conditions takes nothing returns boolean
+	return(IsUnitType(GetEnteringUnit(),UNIT_TYPE_STRUCTURE))!=null
+endfunction
+
+function Trig_no_build_in_trees_Actions takes nothing returns nothing
+	call KillUnit(GetEnteringUnit())
+	call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(GetEnteringUnit())),(udg_strings01[1]+"¡No tienes permiso de construir en el bosque! ¡SONSO!|r"))
+endfunction
+
+function Trig_enter_in_padure_Conditions takes nothing returns boolean
+	return(GetUnitTypeId(GetEnteringUnit())=='n000')
+endfunction
+
+function Trig_enter_in_padure_Actions takes nothing returns nothing
+	call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(GetEnteringUnit())),(udg_strings01[5]+"Estás en el Bosque, no puedes construir aquí.|r"))
+endfunction
+
+function Trig_INITIALIZATION_Func001C takes nothing returns boolean
+	return(GetPlayerController(Player($B))==MAP_CONTROL_USER)
+endfunction
+
+function Trig_INITIALIZATION_Func004002 takes nothing returns nothing
+	call SetDestructableInvulnerable(GetEnumDestructable(),true)
+endfunction
+
+function Trig_INITIALIZATION_Func093A takes nothing returns nothing
+	call SetPlayerTechMaxAllowedSwap('h00E',1,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h000',1,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h008',1,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h001',5,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h00M',5,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h00U',5,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h00Y',5,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h013',5,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('n002',15,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('n003',15,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('n004',15,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('n00D',15,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h00F',5,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h00G',2,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h00R',1,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('n00C',4,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h01B',1,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h01F',1,GetEnumPlayer())
+	call SetPlayerTechMaxAllowedSwap('h019',1,GetEnumPlayer())
+endfunction
+
+function Trig_Chest_enter_Conditions takes nothing returns boolean
+	return(GetUnitTypeId(GetTriggerUnit())=='h019')
+endfunction
+
+function Trig_Chest_enter_Actions takes nothing returns nothing
+	set udg_units03[(1+GetPlayerId(GetOwningPlayer(GetTriggerUnit())))]=GetTriggerUnit()
+endfunction
+
+function Trig_Chest_dies_Conditions takes nothing returns boolean
+	return(GetUnitTypeId(GetDyingUnit())=='h019')
+endfunction
+
+function Trig_Chest_dies_Actions takes nothing returns nothing
+	set udg_units03[(1+GetPlayerId(GetOwningPlayer(GetDyingUnit())))]=null
+endfunction
+
+function Trig_gold_mine_build_Conditions takes nothing returns boolean
+	return(GetUnitTypeId(GetEnteringUnit())=='h01B')
+endfunction
+
+function Trig_gold_mine_build_Func001Func001C takes nothing returns boolean
+	return((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE))and(GetOwningPlayer(GetEnumUnit())==GetOwningPlayer(GetEnteringUnit()))and(GetUnitTypeId(GetEnumUnit())=='h000'))!=null
+endfunction
+
+function Trig_gold_mine_build_Func001A takes nothing returns nothing
+	if(Trig_gold_mine_build_Func001Func001C())then
+		call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(GetEnteringUnit())),(udg_strings01[$A]+"No tienes permiso para construir una mina de oro cerca (300 de rango) de tu Tent!|r"))
+		call KillUnit(GetEnteringUnit())
+		call AdjustPlayerStateBJ(1000,GetOwningPlayer(GetEnteringUnit()),PLAYER_STATE_RESOURCE_LUMBER)
+		call AdjustPlayerStateBJ(1000,GetOwningPlayer(GetEnteringUnit()),PLAYER_STATE_RESOURCE_GOLD)		
+	endif
+endfunction
+
+function Trig_gold_mine_build_Actions takes nothing returns nothing
+	call ForGroupBJ(GetUnitsInRangeOfLocAll(300.,GetUnitLoc(GetEnteringUnit())),function Trig_gold_mine_build_Func001A)
+endfunction
+
+function Trig_Demolisher_Conditions takes nothing returns boolean
+	return(GetSpellAbilityId()=='A01S')
+endfunction
+
+function Trig_Demolisher_Actions takes nothing returns nothing
+	call KillUnit(GetSpellAbilityUnit())
+endfunction
+
+function Trig_take_aim_ability_Conditions takes nothing returns boolean
+	return(GetLearnedSkill()=='A014')
+endfunction
+
+function Trig_take_aim_ability_Actions takes nothing returns nothing
+	call SetPlayerTechResearchedSwap('R00C',(GetPlayerTechCountSimple('R00C',GetOwningPlayer(GetLearningUnit()))+1),GetOwningPlayer(GetLearningUnit()))
+endfunction
+// Sección Optimizada
+function Trig_Hero_Sold_Conditions takes nothing returns boolean
+    return IsUnitType(GetSoldUnit(), UNIT_TYPE_HERO)
+endfunction
+
+function Trig_Hero_Sold_Func020002 takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap(GetUnitTypeId(GetSoldUnit()), 0, GetEnumPlayer())
+endfunction
+
+function Trig_Hero_Sold_Actions takes nothing returns nothing
+    local player owner = GetOwningPlayer(GetBuyingUnit())
+    local integer playerId = GetPlayerId(owner)
+    set udg_booleans01[(1 + playerId)] = true
+
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[(1 + playerId)] + GetPlayerName(owner) + udg_strings01[$A] + " Fue elegido|r " + GetUnitName(GetSoldUnit()) + udg_strings01[$A] + ".|r")
+    call RemoveUnit(GetBuyingUnit())
+    call PanCameraToTimedLocForPlayer(owner, GetPlayerStartLocationLoc(owner), 0)
+    call SetPlayerMaxHeroesAllowed(0, owner)
+    call SetUnitPositionLoc(GetSoldUnit(), GetPlayerStartLocationLoc(owner))
+    set udg_units01[(1 + playerId)] = GetSoldUnit()
+    call CreateNUnitsAtLoc(1, 'n000', owner, GetPlayerStartLocationLoc(owner), bj_UNIT_FACING)
+    set udg_units02[(1 + playerId)] = bj_lastCreatedUnit
+    call ClearSelectionForPlayer(owner)
+    call SelectUnitAddForPlayer(udg_units01[(1 + playerId)], owner)
+    call SelectUnitAddForPlayer(udg_units02[(1 + playerId)], owner)
+    call ForForce(bj_FORCE_ALL_PLAYERS, function Trig_Hero_Sold_Func020002)
+endfunction
+
+function Trig_every_seconds_Func002C takes nothing returns boolean
+    return udg_integer02 == 60
+endfunction
+
+function Trig_every_seconds_Actions takes nothing returns nothing
+    set udg_integer02 = (udg_integer02 + 1)
+    if Trig_every_seconds_Func002C() then
+        set udg_integer02 = 0
+        set udg_integer03 = (udg_integer03 + 1)
+        call SetPlayerTechResearchedSwap('R00E', (GetPlayerTechCountSimple('R00E', Player($B)) + 1), Player($B))
+    endif
+endfunction
+// ===============================================================================
+function Trig_Clicked_easy_Conditions takes nothing returns boolean
+    return GetClickedButton() == udg_buttons01[1]
+endfunction
+
+function Trig_Clicked_easy_Actions takes nothing returns nothing
+    local integer i
+    local location loc
+
+    call EnableTrigger(udg_trigger74)
+    set udg_boolean01 = true
+    // Mensaje inicial
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[1] + GetPlayerName(Player(0)) + udg_strings01[$A] + " Se seleccionó dificultad:|r Suicida" + udg_strings01[$A] + ".|r")
+    call TriggerExecute(udg_trigger187)
+    call TriggerExecute(udg_trigger204)
+    call SetPlayerHandicapBJ(Player($B), 25.)
+    call SetPlayerHandicapBJ(Player($A), 25.)
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[7] + "75% Handicap for Zombies.|r")
+    // Crear héroes para cada jugador humano (evitando leaks)
+    set loc = GetUnitLoc(udg_unit05)
+    set i = 0
+    loop
+        exitwhen i > 9
+        if (GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
+            call CreateNUnitsAtLoc(1, 'e000', Player(i), loc, bj_UNIT_FACING)
+        endif
+        set i = i + 1
+    endloop
+    call RemoveLocation(loc)
+    set loc = null
+    // Timer
+    call CreateTimerDialogBJ(udg_timer01, "|cff8C98ffTiempo restante . . .|r")
+    set udg_timerdialog01 = bj_lastCreatedTimerDialog
+    //call StartTimerBJ(udg_timer01, false, 1380.) // 23 minutos
+    call StartTimerBJ(udg_timer01, false, 5.) // TEST
+endfunction
+
+function Trig_INITIALIZATION_Func102C takes nothing returns boolean
+	return(GetPlayerSlotState(Player(0))==PLAYER_SLOT_STATE_PLAYING)
+endfunction
+
+function ExecuteDifficultyTrigger takes nothing returns nothing
+    call ConditionalTriggerExecute(udg_trigger58)
+endfunction
+
+function AfterCountdown takes nothing returns nothing
+    // --- Selección o forzado de dificultad ---
+    if (Trig_INITIALIZATION_Func102C()) then
+        // diálogo dificultad manual (solo Player 0)
+        call DialogClear(udg_dialog01)
+        call DialogSetMessage(udg_dialog01,"Difficulty")
+        call DialogAddButtonBJ(udg_dialog01,"|cff00ff00Suicida|r")
+        set udg_buttons01[1]=bj_lastCreatedButton
+        call DialogAddButtonBJ(udg_dialog01,"|cffff8000Infierno|r")
+        set udg_buttons01[2]=bj_lastCreatedButton
+        call DialogAddButtonBJ(udg_dialog01,"|cffff0000Apocalipsis|r")
+        set udg_buttons01[3]=bj_lastCreatedButton
+        call DialogDisplayBJ(true,udg_dialog01,Player(0))
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,"|cffff0000" + GetPlayerName(Player(0)) + "|cff8C98ff has|r 15 |cff8C98ffseconds to select the difficulty.|r")
+        call TimerStart(CreateTimer(), 15.00, false, function ExecuteDifficultyTrigger)
+    else
+        // auto dificultad suicida
+        call Trig_Clicked_easy_Actions()
+    endif
+endfunction
+
+function StartCountdown takes nothing returns nothing
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, "|cff8C98ffEl Juego comienza en |r 5 |cff8C98ffsegundos.|r")
+    call TimerStart(CreateTimer(), 5.00, false, function AfterCountdown)
+endfunction
+
+function InitMessage takes nothing returns nothing
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, "|cffff0000JS - Punk presents:|r Zombie Attack (v4.0) Updated.")
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, "|cff8C98ffPuedes obtener la versión original v2.8 de ade206 en|r|cff00ffff www.hiveworkshop.com|r")
+    // mensaje del countdown
+    call TimerStart(CreateTimer(), 2.00, false, function StartCountdown)
+endfunction
+
+function Trig_INITIALIZATION_Actions takes nothing returns nothing
+    local integer i
+    local destructable array d
+    local string array colors
+    // Variables iniciales
+    set udg_integer12 = $A
+    set udg_booleans01[$C] = true
+    call EnumDestructablesInRectAll(udg_rect08, function Trig_INITIALIZATION_Func004002)
+    // Destructibles invulnerables
+    set d[0] = udg_destructable06
+    set d[1] = udg_destructable04
+    set d[2] = udg_destructable03
+    set d[3] = udg_destructable05
+    set i = 0
+    loop
+        exitwhen i > 3
+        call SetDestructableInvulnerable(d[i], true)
+        set i = i + 1
+    endloop
+    // Reseteo de booleanos
+    set i = 1
+    loop
+        exitwhen i > $A
+        set udg_booleans04[i] = false
+        set i = i + 1
+    endloop
+    set udg_booleans01[$B] = true
+    set udg_integer01     = $A
+
+	set udg_strings01[1]="|cffff0000"
+	set udg_strings01[2]="|cff0000ff"
+	set udg_strings01[3]="|cff00ffff"
+	set udg_strings01[4]="|cff8000ff"
+	set udg_strings01[5]="|cffffff00"
+	set udg_strings01[6]="|cffff8000"
+	set udg_strings01[7]="|cff00ff00"
+	set udg_strings01[8]="|cffff00ff"
+	set udg_strings01[9]="|cff808080"
+	set udg_strings01[$A]="|cff8C98ff"
+	set udg_strings01[$B]="|cff045b00"
+	set udg_strings01[$C]="|cff804000"
+    // Config global
+    call FogMaskEnableOff()
+    call SetPlayerFlagBJ(PLAYER_STATE_GIVES_BOUNTY, true, Player(10))
+    call SetPlayerFlagBJ(PLAYER_STATE_GIVES_BOUNTY, true, Player(11))
+    call SetMapFlag(MAP_LOCK_RESOURCE_TRADING, false)
+    // Fuerza jugadores humanos (0..9 jugando)
+    set i = 0
+    loop
+        exitwhen i > 9
+        if (GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
+            call ForceAddPlayer(udg_force01, Player(i))
+        endif
+        set i = i + 1
+    endloop
+    // Forzar ajustes iniciales
+    call ForForce(bj_FORCE_ALL_PLAYERS, function Trig_INITIALIZATION_Func093A)
+    call UseTimeOfDayBJ(false)
+    call SetTimeOfDay(24.)
+    // Empezar flujo de mensajes / countdown con timer
+    call TimerStart(CreateTimer(), 2.00, false, function InitMessage)
+endfunction
+
+function Trig_Clicked_normal_Conditions takes nothing returns boolean
+    return GetClickedButton() == udg_buttons01[2]
+endfunction
+
+function Trig_Clicked_normal_Actions takes nothing returns nothing
+    local integer i
+    local location loc
+
+    call EnableTrigger(udg_trigger74)
+    set udg_boolean01 = true
+    // Mensaje inicial
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[1] + GetPlayerName(Player(0)) + udg_strings01[$A] + " Se seleccionó dificultad:|r Infierno" + udg_strings01[$A] + ".|r")
+    call TriggerExecute(udg_trigger187)
+    call TriggerExecute(udg_trigger204)
+    // Handicaps
+    call SetPlayerHandicapBJ(Player($B), 50.)
+    call SetPlayerHandicapBJ(Player($A), 50.)
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[6] + "50% Handicap for Zombies.|r")
+    // Crear héroes para cada jugador humano (evitando leaks)
+    set loc = GetUnitLoc(udg_unit05)
+    set i = 0
+    loop
+        exitwhen i > 9
+        if (GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
+            call CreateNUnitsAtLoc(1, 'e000', Player(i), loc, bj_UNIT_FACING)
+        endif
+        set i = i + 1
+    endloop
+    call RemoveLocation(loc)
+    set loc = null
+    // Timer
+    call CreateTimerDialogBJ(udg_timer01, "|cff8C98ffTiempo restante . . .|r")
+    set udg_timerdialog01 = bj_lastCreatedTimerDialog
+    call StartTimerBJ(udg_timer01, false, 1020.) // 17 minutos
+endfunction
+
+function Loop1 takes nothing returns nothing
+    call SetSoundVolumeBJ(udg_sound13, 120.)
+    call PlaySoundBJ(udg_sound13)
+endfunction
+
+function Loop2 takes nothing returns nothing
+    call SetSoundVolumeBJ(udg_sound10, 120.)
+    call PlaySoundBJ(udg_sound10)
+endfunction
+
+function Loop3 takes nothing returns nothing
+    call SetSoundVolumeBJ(udg_sound10, 120.)
+    call PlaySoundBJ(udg_sound10)
+endfunction
+
+function Loop4 takes nothing returns nothing
+    call SetSoundVolumeBJ(udg_sound11, 120.)
+    call PlaySoundBJ(udg_sound11)
+endfunction
+
+function Ending takes nothing returns nothing
+    call SetSoundVolumeBJ(udg_sound11, 120.)
+    call PlaySoundBJ(udg_sound11)
+endfunction
+
+function Trig_Clicked_hard_Conditions takes nothing returns boolean
+    return GetClickedButton() == udg_buttons01[3]
+endfunction
+
+function Trig_Clicked_hard_Actions takes nothing returns nothing
+    local integer i
+    local location loc
+
+    call EnableTrigger(udg_trigger74)
+    set udg_boolean01 = true
+    // Mensaje inicial
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[1] + GetPlayerName(Player(0)) + udg_strings01[10] + " Se seleccionó dificultad:|r Apocalipsis" + udg_strings01[10] + ".|r")
+    call TriggerExecute(udg_trigger187)
+    call TriggerExecute(udg_trigger204)
+    // NO handicap
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[1] + "No Handicap for Zombies.|r")
+    // Crear héroes para cada jugador humano (evitando leaks)
+    set loc = GetUnitLoc(udg_unit05)
+    set i = 0
+    loop
+        exitwhen i > 9
+        if (GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
+            call CreateNUnitsAtLoc(1, 'e000', Player(i), loc, bj_UNIT_FACING)
+        endif
+        set i = i + 1
+    endloop
+    call RemoveLocation(loc)
+    set loc = null
+    // Iniciar el temporizador de partida
+    call CreateTimerDialogBJ(udg_timer01, "|cff8C98ffTiempo restante . . .|r")
+    set udg_timerdialog01 = bj_lastCreatedTimerDialog
+    call StartTimerBJ(udg_timer01, false, 784.) // 13 minutos
+    // Música inicial
+    call SetSoundVolumeBJ(udg_sound14, 140.) // Prospero5 0:40s
+    call PlaySoundBJ(udg_sound14)
+    // Programar la música en intervalos (NO TOCAR)
+    call TimerStart(CreateTimer(),  40., false, function Loop1)   // Prospero4 2:27s
+    call TimerStart(CreateTimer(), 189., false, function Loop2)   // Revelations 1:36s
+    call TimerStart(CreateTimer(), 286., false, function Loop3)   // Revelations 1:36s
+    call TimerStart(CreateTimer(), 382., false, function Loop4)   // The_Voice_Of_The_Night 3:20s
+    call TimerStart(CreateTimer(), 584., false, function Ending)  // The_Voice_Of_The_Night 3:20s
+endfunction
+// Seccion compactada y optimizada
+function Trig_Anti_Ally_Kills_Func004C takes nothing returns boolean
+    return GetOwningPlayer(GetTriggerUnit()) == Player(0) or GetOwningPlayer(GetTriggerUnit()) == Player(1) or GetOwningPlayer(GetTriggerUnit()) == Player(2) or GetOwningPlayer(GetTriggerUnit()) == Player(3) or GetOwningPlayer(GetTriggerUnit()) == Player(4) or GetOwningPlayer(GetTriggerUnit()) == Player(5) or GetOwningPlayer(GetTriggerUnit()) == Player(6) or GetOwningPlayer(GetTriggerUnit()) == Player(7) or GetOwningPlayer(GetTriggerUnit()) == Player(8) or GetOwningPlayer(GetTriggerUnit()) == Player(9)
+endfunction
+
+function Trig_Anti_Ally_Kills_Func005C takes nothing returns boolean
+    return GetOwningPlayer(GetAttacker()) == Player(0) or GetOwningPlayer(GetAttacker()) == Player(1) or GetOwningPlayer(GetAttacker()) == Player(2) or GetOwningPlayer(GetAttacker()) == Player(3) or GetOwningPlayer(GetAttacker()) == Player(4) or GetOwningPlayer(GetAttacker()) == Player(5) or GetOwningPlayer(GetAttacker()) == Player(6) or GetOwningPlayer(GetAttacker()) == Player(7) or GetOwningPlayer(GetAttacker()) == Player(8) or GetOwningPlayer(GetAttacker()) == Player(9)
+endfunction
+
+function Trig_Anti_Ally_Kills_Conditions takes nothing returns boolean
+    return GetOwningPlayer(GetTriggerUnit()) != GetOwningPlayer(GetAttacker()) and Trig_Anti_Ally_Kills_Func004C() and Trig_Anti_Ally_Kills_Func005C()
+endfunction
+
+function Trig_Anti_Ally_Kills_Func003C takes nothing returns boolean
+    return GetOwningPlayer(GetTriggerUnit()) != GetOwningPlayer(GetAttacker())
+endfunction
+
+function Trig_Anti_Ally_Kills_Actions takes nothing returns nothing
+    local unit attacker = GetAttacker()
+    local player owner = GetOwningPlayer(GetTriggerUnit())
+    call IssueImmediateOrderById(attacker, $D0004)
+    if Trig_Anti_Ally_Kills_Func003C() then
+        call DisplayTextToForce(GetForceOfPlayer(owner), udg_strings01[(1 + GetPlayerId(owner))] + GetPlayerName(owner) + udg_strings01[$A] + " is trying to attack you.|r")
+    endif
+endfunction
+
+function Trig_Anti_hero_kill_Conditions takes nothing returns boolean
+    return GetOwningPlayer(GetTriggerUnit()) == GetOwningPlayer(GetAttacker()) and IsUnitType(GetTriggerUnit(), UNIT_TYPE_HERO)
+endfunction
+
+function Trig_Anti_hero_kill_Actions takes nothing returns nothing
+    call IssueImmediateOrderById(GetAttacker(), $D0004)
+endfunction
+
+function Trig_Timer_Expire_Func076Func001Func003002 takes nothing returns nothing
+    call KillUnit(GetEnumUnit())
+endfunction
+
+function Trig_Timer_Expire_Func076Func001C takes nothing returns boolean
+    return udg_booleans01[(1 + GetPlayerId(GetEnumPlayer()))] == false and GetPlayerSlotState(GetEnumPlayer()) == PLAYER_SLOT_STATE_PLAYING
+endfunction
+
+function Trig_Timer_Expire_Func076A takes nothing returns nothing
+    local player p = GetEnumPlayer()
+    if Trig_Timer_Expire_Func076Func001C() then
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[(1 + GetPlayerId(p))] + GetPlayerName(p) + udg_strings01[$A] + " has been kicked, reason:|r no hero")
+        call CustomDefeatBJ(p, "You have been kicked!")
+        call ForGroupBJ(GetUnitsOfPlayerAll(p), function Trig_Timer_Expire_Func076Func001Func003002)
+        call ForceRemovePlayer(udg_force01, p)
+    endif
+endfunction
+// Función helper para sonidos de boss
+function PlayBossWarningSound takes nothing returns nothing
+    call SetSoundVolumeBJ(udg_sound01,50.)
+    call PlaySoundBJ(udg_sound01)
+    call SetSoundVolumeBJ(udg_sound01,50.)
+endfunction
+// Función helper para sonidos especiales de boss
+function PlaySpecialBossSound takes sound whichSound returns nothing
+    call SetSoundVolumeBJ(whichSound,255.)
+    call PlaySoundBJ(whichSound)
+    call SetSoundVolumeBJ(whichSound,255.)
+endfunction
+// Callback principal de la secuencia de bosses
+function BossSequenceCallback takes nothing returns nothing
+    local real nextDelay = 350.0
+    
+    if udg_boss_sequence_step == 1 then
+        // -----------------------------------------------------------------------------------------------------	
+        call TriggerExecute(gg_trg_Boss_1)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r The Butcher "+(udg_strings01[$A]+"has spawned!")))	
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 2 then
+        // -----------------------------------------------------------------------------------------------------	
+        call TriggerExecute(gg_trg_Boss_2)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Heresiarch "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 3 then
+        // -----------------------------------------------------------------------------------------------------	
+        // SEGUNDA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T1_Witch_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T1_Witch_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T1_Witch_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T1_Witch_P11)	
+        
+        call TriggerExecute(gg_trg_Boss_3)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Mortis "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 4 then
+        call TriggerExecute(gg_trg_Boss_4)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Cho'Gall "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 5 then
+        // -----------------------------------------------------------------------------------------------------
+        // TERCERA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T1_Zombie_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T1_Zombie_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T1_Zombie_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T1_Zombie_P11)
+        
+        call TriggerExecute(gg_trg_Boss_5)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Demon "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 6 then
+        call TriggerExecute(gg_trg_Boss_6)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Hell Bull Tormentor "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        set nextDelay = 300.0
+        
+    elseif udg_boss_sequence_step == 7 then
+        // -----------------------------------------------------------------------------------------------------		
+        // CUARTA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T1_Skeleton_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T1_Skeleton_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T1_Skeleton_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T1_Skeleton_P11)
+        
+        call TriggerExecute(gg_trg_Boss_7)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Spirit of Vengance "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        set nextDelay = 300.0
+        
+    elseif udg_boss_sequence_step == 8 then
+        call TriggerExecute(gg_trg_Boss_8)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Cave Troll "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 9 then
+        // -----------------------------------------------------------------------------------------------------
+        // QUINTA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T1_Zerling_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T1_Zerling_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T1_Zerling_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T1_Zerling_P11)
+        
+        call TriggerExecute(gg_trg_Boss_9)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Death Ogre "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 10 then
+        call TriggerExecute(gg_trg_Boss_10)
+        call TriggerExecute(gg_trg_Boss_1)
+        call TriggerExecute(gg_trg_Boss_1)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Morgomir "+(udg_strings01[$A]+"has spawned with 2 Butchers!!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 11 then
+        // -----------------------------------------------------------------------------------------------------	
+        // SEXTA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T2_Poltergeist_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T2_Poltergeist_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T2_Poltergeist_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T2_Poltergeist_P11)	
+        
+        call TriggerExecute(gg_trg_Boss_11)
+        call TriggerExecute(gg_trg_Boss_1)
+        call TriggerExecute(gg_trg_Boss_1)			
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Azaghál "+(udg_strings01[$A]+"has spawned with 2 Butchers!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 12 then
+        call TriggerExecute(gg_trg_Boss_12)
+        call TriggerExecute(gg_trg_Boss_1)
+        call TriggerExecute(gg_trg_Boss_1)			
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Ouroboros "+(udg_strings01[$A]+"has spawned with 2 Butchers!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 13 then
+        // ----------------------------------------------------------------------------------------------------- 1
+        // SEPTIMA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T2_Abominacion_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T2_Abominacion_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T2_Abominacion_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T2_Abominacion_P11)	
+        
+        call TriggerExecute(gg_trg_Boss_13)	
+        call TriggerExecute(gg_trg_Boss_1)
+        call TriggerExecute(gg_trg_Boss_1)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Ulcarië "+(udg_strings01[$A]+"has spawned with 2 Butchers!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 14 then
+        // ----------------------------------------------------------------------------------------------------- 2	
+        call TriggerExecute(gg_trg_Boss_14)		
+        call TriggerExecute(gg_trg_Boss_2)
+        call TriggerExecute(gg_trg_Boss_2)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Gavinrad "+(udg_strings01[$A]+"has spawned with 2 Heresiarchs!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 15 then
+        // ----------------------------------------------------------------------------------------------------- 3	
+        // OCTAVA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T2_Warlock_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T2_Warlock_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T2_Warlock_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T2_Warlock_P11)
+        
+        call EnableTrigger(udg_trigger82) // CHANCE DE OLEADAS T2 RANDOM
+        
+        call TriggerExecute(gg_trg_Boss_15)	
+        call TriggerExecute(gg_trg_Boss_2)
+        call TriggerExecute(gg_trg_Boss_2)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Necrodion "+(udg_strings01[$A]+"has spawned with 2 Heresiarchs!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 16 then
+        // ----------------------------------------------------------------------------------------------------- 4	
+        call TriggerExecute(gg_trg_Boss_16)	
+        call TriggerExecute(gg_trg_Boss_2)
+        call TriggerExecute(gg_trg_Boss_2)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Thauradion "+(udg_strings01[$A]+"has spawned with 2 Heresiarchs!!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 17 then
+        // ----------------------------------------------------------------------------------------------------- 5	
+        // NOVENA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T2_Knight_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T2_Knight_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T2_Knight_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T2_Knight_P11)	
+        
+        call TriggerExecute(gg_trg_Boss_17)
+        call TriggerExecute(gg_trg_Boss_2)
+        call TriggerExecute(gg_trg_Boss_2)		
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Môriel "+(udg_strings01[$A]+"has spawned with 2 Heresiarchs!")))
+        call PlayBossWarningSound()
+        
+    elseif udg_boss_sequence_step == 18 then
+        // ----------------------------------------------------------------------------------------------------- 6	
+        call TriggerExecute(gg_trg_Boss_18)	
+        call TriggerExecute(gg_trg_Boss_3)
+        call TriggerExecute(gg_trg_Boss_3)
+        call TriggerExecute(gg_trg_Boss_3)
+        call TriggerExecute(gg_trg_Boss_3)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Nosferatu - Apostol de la Muerte "+(udg_strings01[$A]+"has spawned with 4 Mortis!")))
+        call PlayBossWarningSound()
+
+        // DÉCIMA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T2_Hereje_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T2_Hereje_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T2_Hereje_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T2_Hereje_P11)
+        
+    elseif udg_boss_sequence_step == 19 then
+        // ----------------------------------------------------------------------------------------------------- 7 y 8	
+        call TriggerExecute(gg_trg_Boss_19)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r La mano Derecha de la Muerte, Rancgurthil Forwen "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        set nextDelay = 2.0
+        
+    elseif udg_boss_sequence_step == 20 then
+        call TriggerExecute(gg_trg_Boss_20)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r La mano Izquierda de la Muerte, Rancgurthil Huilen "+(udg_strings01[$A]+"has spawned!")))
+        call PlayBossWarningSound()
+        set nextDelay = 350.0
+        
+    elseif udg_boss_sequence_step == 21 then
+        // ----------------------------------------------------------------------------------------------------- 9	
+        call TriggerExecute(gg_trg_Boss_21)	
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Barón - Anfauglir "+(udg_strings01[$A]+"has spawned!")))
+        call PlaySpecialBossSound(udg_sound08)
+        set nextDelay = 400.0
+        
+    elseif udg_boss_sequence_step == 22 then
+        // ----------------------------------------------------------------------------------------------------- 10	
+        call TriggerExecute(gg_trg_Boss_22)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,("|cff8C98ff!!!WARNING!!!|r Gaurhaudh - El Señor del Caos "+(udg_strings01[$A]+"has spawned!")))
+        call PlaySpecialBossSound(udg_sound12)
+        // call DisableTrigger(udg_trigger81)
+        // call DisableTrigger(udg_trigger82)
+        return
+    endif    
+    // Continuar con el siguiente paso
+    set udg_boss_sequence_step = udg_boss_sequence_step + 1
+    call TimerStart(udg_boss_sequence_timer, nextDelay, false, function BossSequenceCallback)
+endfunction
+
+// Función de countdown optimizada sin TriggerSleepAction
+function CountdownCallback takes nothing returns nothing
+    if udg_countdown_current > 1 then
+        call ClearTextMessagesBJ(bj_FORCE_ALL_PLAYERS)
+        if udg_countdown_current == 1 then
+            call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[$A]+("Zombies are coming in|r "+I2S(udg_countdown_current)+(udg_strings01[$A]+" second!|r"))))
+        else
+            call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[$A]+("Zombies are coming in|r "+I2S(udg_countdown_current)+(udg_strings01[$A]+" seconds!|r"))))
+        endif
+        set udg_countdown_current = udg_countdown_current - 1
+        call TimerStart(udg_countdown_timer, 1.0, false, function CountdownCallback)
+    else
+        // Fin del countdown - iniciar secuencia principal
+        call ClearTextMessagesBJ(bj_FORCE_ALL_PLAYERS)
+        call SetUnitInvulnerable(udg_unit06,false)
+        call SetUnitInvulnerable(udg_unit07,false)	
+        call SetUnitInvulnerable(udg_unit08,false)
+        call SetUnitInvulnerable(udg_unit09,false)	
+        call SetUnitInvulnerable(udg_unit10,false)	
+        call SetUnitInvulnerable(udg_unit11,false)	
+        call SetUnitInvulnerable(udg_unit12,false)
+        call SetUnitInvulnerable(udg_unit13,false)
+        call SetUnitInvulnerable(udg_unit14,false)
+        call SetUnitInvulnerable(udg_unit15,false)
+        call SetUnitInvulnerable(udg_unit16,false)
+        call SetUnitInvulnerable(udg_unit17,false)	
+        call EnableTrigger(udg_trigger65)
+        call DisableTrigger(udg_trigger74)
+        call SetSoundVolumeBJ(udg_sound07,50.)
+        call PlaySoundBJ(udg_sound07)
+        call SetSoundVolumeBJ(udg_sound07,50.)
+        call MultiboardDisplay(udg_multiboard01,true)
+
+        call EnableTrigger(udg_trigger83)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[$A]+"El tiempo se acabó... y el olor a muerte se avecina... SE ACERCAN!!|r"))
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[1]+"Tienes 3 horas para destruir los Zombie Towers... y al arquitecto de este apocalipsis!"))
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping1), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping2), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping3), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping4), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping5), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping6), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping7), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping8), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping9), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping10), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping11), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call PingMinimapLocForForceEx( GetPlayersAll(), GetRectCenter(gg_rct_Ping12), 15.00, bj_MINIMAPPINGSTYLE_FLASHY, 100, 100, 0.00 )
+        call DestroyTimerDialog(udg_timerdialog01)
+        call CreateTimerDialogBJ(udg_timer02,(udg_strings01[$A]+"Tiempo restante . . ."))
+        set udg_timerdialog02=bj_lastCreatedTimerDialog
+        call StartTimerBJ(udg_timer02,false,10800.) // 3 horas de duración de la partida
+        call ForForce(bj_FORCE_ALL_PLAYERS,function Trig_Timer_Expire_Func076A)
+        
+        // PRIMERA TANDA DE ENEMIGOS	
+        call EnableTrigger(gg_trg_Zona_1_Periodicas_T1_Cannibal_P11)
+        call EnableTrigger(gg_trg_Zona_2_Periodicas_T1_Cannibal_P11)
+        call EnableTrigger(gg_trg_Zona_3_Periodicas_T1_Cannibal_P11)
+        call EnableTrigger(gg_trg_Zona_4_Periodicas_T1_Cannibal_P11)
+
+        // call EnableTrigger(udg_trigger81) // CHANCE DE OLEADAS T1 RANDOM
+        // call EnableTrigger(udg_trigger82) // CHANCE DE OLEADAS T2 RANDOM	
+        
+        // Iniciar secuencia de bosses con timer
+        set udg_boss_sequence_step = 1
+        call TimerStart(udg_boss_sequence_timer, 350.0, false, function BossSequenceCallback)
+    endif
+endfunction
+
+function Trig_Timer_Expire_Actions takes nothing returns nothing
+    call ClearTextMessagesBJ(bj_FORCE_ALL_PLAYERS)
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[$A]+("Zombies are coming in|r 10"+(udg_strings01[$A]+" seconds!|r"))))
+    call PlaySoundBJ(udg_sound06)    
+    // Crear timers e iniciar countdown optimizado
+    set udg_countdown_timer = CreateTimer()
+    set udg_boss_sequence_timer = CreateTimer()
+    set udg_countdown_current = 9
+    call TimerStart(udg_countdown_timer, 1.0, false, function CountdownCallback)
+endfunction
+// Función optimizada para LoseTimer sin TriggerSleepAction
+function Trig_LoseTimer_Expire_Func_PauseUnit takes nothing returns nothing
+    call PauseUnit(GetEnumUnit(),true)
+endfunction
+
+function Trig_LoseTimer_Expire_Func_SetInvulnerable takes nothing returns nothing
+    call SetUnitInvulnerable(GetEnumUnit(),true)
+endfunction
+
+function Trig_LoseTimer_Expire_Func019002 takes nothing returns nothing
+    call CustomVictoryBJ(GetEnumPlayer(),false,true)
+endfunction
+// Timer callback para la secuencia de derrota
+function LoseSequenceCallback takes nothing returns nothing
+    call ForForce(bj_FORCE_ALL_PLAYERS,function Trig_LoseTimer_Expire_Func019002)
+endfunction
+
+function Trig_LoseTimer_Expire_Actions takes nothing returns nothing
+    local timer loseTimer = CreateTimer()
+    
+    call DisableTrigger(udg_trigger90)
+    call PlaySoundBJ(udg_sound04)
+    call DisableTrigger(udg_trigger65)
+    call DisableTrigger(udg_trigger76)
+    call DisableTrigger(udg_trigger77)
+    call DisableTrigger(udg_trigger78)
+    call DisableTrigger(udg_trigger79)
+    call DisableTrigger(udg_trigger72)
+    call ForGroupBJ(GetUnitsInRectAll(bj_mapInitialPlayableArea),function Trig_LoseTimer_Expire_Func_PauseUnit)
+    call ForGroupBJ(GetUnitsInRectAll(bj_mapInitialPlayableArea),function Trig_LoseTimer_Expire_Func_SetInvulnerable)
+    call FogMaskEnableOff()
+    call FogEnableOff()
+    call UseTimeOfDayBJ(false)
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[$A]+"The time has expired, Zombies won the game!!!"))
+    call PauseTimerBJ(true,udg_timer02)    
+    // Usar timer en lugar de TriggerSleepAction
+    call TimerStart(loseTimer, 10.0, false, function LoseSequenceCallback)    
+    set loseTimer = null
+endfunction
+
+function Trig_Select_mereu_tavern_la_inceput_Func001Func001C takes nothing returns boolean
+	return(udg_booleans01[(1+GetPlayerId(GetEnumPlayer()))]==false)
+endfunction
+
+function Trig_Select_mereu_tavern_la_inceput_Func001A takes nothing returns nothing
+	if(Trig_Select_mereu_tavern_la_inceput_Func001Func001C())then
+		call SelectUnitForPlayerSingle(udg_unit05,GetEnumPlayer())
+	endif
+endfunction
+
+function Trig_Select_mereu_tavern_la_inceput_Actions takes nothing returns nothing
+	call ForForce(bj_FORCE_ALL_PLAYERS,function Trig_Select_mereu_tavern_la_inceput_Func001A)
+endfunction
+
+function Trig_Zombie_Upgrade_Func003001 takes nothing returns boolean
+	return(udg_integer04=='d')
+endfunction
+
+function Trig_Zombie_Upgrade_Actions takes nothing returns nothing
+	set udg_integer04=(udg_integer04+1)
+	call SetPlayerTechResearchedSwap('R000',(GetPlayerTechCountSimple('R000',Player(10))+1),Player(10))
+	call SetPlayerTechResearchedSwap('R000',(GetPlayerTechCountSimple('R000',Player(11))+1),Player(11))
+	if(Trig_Zombie_Upgrade_Func003001())then
+		call DisableTrigger(GetTriggeringTrigger())
+	endif
+endfunction
+
+function Trig_boss_killed_Func003C takes nothing returns boolean
+	return(GetUnitTypeId(GetDyingUnit())=='z00I')or(GetUnitTypeId(GetDyingUnit())=='z005')or(GetUnitTypeId(GetDyingUnit())=='z006')or(GetUnitTypeId(GetDyingUnit())=='z007')or(GetUnitTypeId(GetDyingUnit())=='z008')or(GetUnitTypeId(GetDyingUnit())=='z009')or(GetUnitTypeId(GetDyingUnit())=='z00A')or(GetUnitTypeId(GetDyingUnit())=='z00B')or(GetUnitTypeId(GetDyingUnit())=='z00C')or(GetUnitTypeId(GetDyingUnit())=='z00E')or(GetUnitTypeId(GetDyingUnit())=='z00F')or(GetUnitTypeId(GetDyingUnit())=='z00G')or(GetUnitTypeId(GetDyingUnit())=='z00J')or(GetUnitTypeId(GetDyingUnit())=='z00K')or(GetUnitTypeId(GetDyingUnit())=='z00N')or(GetUnitTypeId(GetDyingUnit())=='z00O')or(GetUnitTypeId(GetDyingUnit())=='z00L')or(GetUnitTypeId(GetDyingUnit())=='z00P')or(GetUnitTypeId(GetDyingUnit())=='z00R')or(GetUnitTypeId(GetDyingUnit())=='z00M')or(GetUnitTypeId(GetDyingUnit())=='z00D')or(GetUnitTypeId(GetDyingUnit())=='z00Q')
+endfunction
+
+function Trig_boss_killed_Conditions takes nothing returns boolean
+	return(GetOwningPlayer(GetDyingUnit())==Player($B))and(Trig_boss_killed_Func003C())
+endfunction
+
+function Trig_boss_killed_Actions takes nothing returns nothing
+	call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[(1+GetPlayerId(GetOwningPlayer(GetKillingUnit())))]+((GetPlayerName(GetOwningPlayer(GetKillingUnit()))+udg_strings01[$A])+(" has killed the|r "+(GetUnitName(GetDyingUnit())+(udg_strings01[$A]+"!!|r"))))))
+endfunction
+
+function Trig_Kills_Conditions takes nothing returns boolean
+    return (GetOwningPlayer(GetDyingUnit()) == Player(11)) and (not IsUnitType(GetDyingUnit(), UNIT_TYPE_STRUCTURE))
+endfunction
+
+function Trig_Kills_Actions takes nothing returns nothing
+    set udg_integers01[1 + GetPlayerId(GetOwningPlayer(GetKillingUnit()))] = udg_integers01[1 + GetPlayerId(GetOwningPlayer(GetKillingUnit()))] + 1
+endfunction
+
+function Trig_Deaths_Conditions takes nothing returns boolean
+    return GetOwningPlayer(GetKillingUnit()) == Player(11)
+endfunction
+
+function Trig_Deaths_Actions takes nothing returns nothing
+    set udg_integers02[1 + GetPlayerId(GetOwningPlayer(GetDyingUnit()))] = udg_integers02[1 + GetPlayerId(GetOwningPlayer(GetDyingUnit()))] + 1
+endfunction
+
+function Trig_player_leaves_Func001C takes nothing returns boolean
+	return(udg_booleans03[(1+GetPlayerId(GetTriggerPlayer()))])
+endfunction
+
+function Trig_player_leaves_Func005002 takes nothing returns nothing
+	call KillUnit(GetEnumUnit())
+endfunction
+
+function Trig_player_leaves_Actions takes nothing returns nothing
+	if(Trig_player_leaves_Func001C())then
+		call DialogDisplayBJ(false,udg_dialog02,GetTriggerPlayer())
+		set udg_boolean03=false
+		set udg_booleans03[(1+GetPlayerId(GetTriggerPlayer()))]=false
+	endif
+	call ForceRemovePlayer(udg_force01,GetTriggerPlayer())
+	call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[(1+GetPlayerId(GetTriggerPlayer()))]+(GetPlayerName(GetTriggerPlayer())+(udg_strings01[$A]+" ha salido del juego."))))
+	call DisplayTextToForce(bj_FORCE_ALL_PLAYERS,(udg_strings01[$A]+"Todas sus unidades y estructuras fueron removidas."))
+	call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_player_leaves_Func005002)
+endfunction
+
+function Trig_builder_dies_Conditions takes nothing returns boolean
+	return(GetUnitTypeId(GetDyingUnit())=='n000')and(GetPlayerSlotState(GetOwningPlayer(GetDyingUnit()))==PLAYER_SLOT_STATE_PLAYING)
+endfunction
+
+function Trig_builder_dies_Func001C takes nothing returns boolean
+	return(IsUnitAliveBJ(udg_units01[(1+GetPlayerId(GetOwningPlayer(GetDyingUnit())))]))
+endfunction
+
+function Trig_builder_dies_Actions takes nothing returns nothing
+	if(Trig_builder_dies_Func001C())then
+		call CreateNUnitsAtLoc(1,'n000',GetOwningPlayer(GetDyingUnit()),GetUnitLoc(udg_units01[(1+GetPlayerId(GetOwningPlayer(GetDyingUnit())))]),bj_UNIT_FACING)
+		set udg_units02[(1+GetPlayerId(GetOwningPlayer(GetDyingUnit())))]=bj_lastCreatedUnit
+	endif
+endfunction
+
+function Trig_hero_dies_Conditions takes nothing returns boolean
+    local unit u = GetDyingUnit()
+    local integer LOBOTYPE1 = 'H01D' // Lobo normal
+    local integer LOBOTYPE2 = 'H01Q' // Lobo transformado
+    local boolean resultado = false
+    // Si es héroe, está jugando, el asesino es el jugador B, y NO es el lobo
+    if IsUnitType(u, UNIT_TYPE_HERO) and GetPlayerSlotState(GetOwningPlayer(u)) == PLAYER_SLOT_STATE_PLAYING and (GetOwningPlayer(GetKillingUnit()) == Player(10) or GetOwningPlayer(GetKillingUnit()) == Player(11)) then
+        if GetUnitTypeId(u) != LOBOTYPE1 and GetUnitTypeId(u) != LOBOTYPE2 then
+            set resultado = true
+        endif
+    endif
+    set u = null
+    return resultado
+endfunction
+
+function Trig_hero_dies_Func001C takes nothing returns boolean
+	return(udg_booleans03[(1+GetPlayerId(GetOwningPlayer(GetDyingUnit())))])
+endfunction
+
+function Trig_hero_dies_Func008002 takes nothing returns nothing
+	call KillUnit(GetEnumUnit())
+endfunction
+
+function Trig_hero_dies_Func018Func013C takes nothing returns boolean
+	return(udg_booleans04[(1+GetPlayerId(GetOwningPlayer(GetDyingUnit())))])
+endfunction
+
+function Trig_hero_dies_Func018C takes nothing returns boolean
+	return(GetPlayerSlotState(GetOwningPlayer(GetDyingUnit()))==PLAYER_SLOT_STATE_PLAYING)
+endfunction
+
+//==================================================
+// Respawn por timer (sin TriggerSleepAction), sin leaks
+// Requiere: udg_Hashtable (hashtable ya existente)
+//==================================================
+function HeroRespawn_AfterDelay takes nothing returns nothing
+    local timer   t
+    local unit    dying
+    local player  p
+    local location loc
+    local integer pid
+
+    set t     = GetExpiredTimer()
+    set dying = LoadUnitHandle(udg_Hash_Revive, GetHandleId(t), 0)
+    set p     = GetOwningPlayer(dying)
+    set loc   = GetPlayerStartLocationLoc(p)
+    set pid   = GetPlayerId(p) + 1
+
+    if (Trig_hero_dies_Func018C()) then
+        call ForceAddPlayer(udg_force01, p)
+        call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[pid] + GetPlayerName(p) + udg_strings01[$A] + " has been respawned.|r")
+        call PanCameraToTimedLocForPlayer(p, loc, 0.00)
+        call ReviveHeroLoc(dying, loc, true)
+        call CreateNUnitsAtLoc(1, 'n000', p, loc, bj_UNIT_FACING)
+        set udg_units02[pid] = bj_lastCreatedUnit
+
+        call ClearSelectionForPlayer(p)
+        call SelectUnitAddForPlayer(udg_units01[pid], p)
+        call SelectUnitAddForPlayer(udg_units02[pid], p)
+
+        if (Trig_hero_dies_Func018Func013C()) then
+            call SetUnitAbilityLevel(bj_lastCreatedUnit, 'S000', udg_integers24[pid])
+            call SetUnitAbilityLevel(bj_lastCreatedUnit, 'A05B', udg_integers25[pid])
+            call SetUnitAbilityLevel(bj_lastCreatedUnit, 'A05C', udg_integers26[pid])
+            call SetUnitAbilityLevel(bj_lastCreatedUnit, 'A05A', udg_integers27[pid])
+            call SetUnitAbilityLevel(bj_lastCreatedUnit, 'A05D', udg_integers29[pid])
+        endif
+    endif
+    call RemoveLocation(loc)
+    call FlushChildHashtable(udg_Hash_Revive, GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set dying = null
+    set p = null
+    set loc = null
+endfunction
+
+function Trig_hero_dies_Actions takes nothing returns nothing
+    local unit   dying
+    local player p
+    local integer pid
+    local timer  t
+    local group  g
+    local string s
+    set dying = GetDyingUnit()
+    set p     = GetOwningPlayer(dying)
+    set pid   = GetPlayerId(p) + 1
+	
+    if (Trig_hero_dies_Func001C()) then
+        call DialogDisplayBJ(false, udg_dialog02, p)
+        set udg_boolean03 = false
+        set udg_booleans03[pid] = false
+    endif
+    call SetPlayerTechMaxAllowed(p, 'h01F', 1)
+    call SetPlayerTechMaxAllowed(p, 'h01G', 1)
+    call SetPlayerTechMaxAllowed(p, 'h01H', 1)
+    call SetPlayerTechMaxAllowed(p, 'h01I', 1)
+    call ForceRemovePlayer(udg_force01, p)
+    call StartSound(udg_sound05)
+    // Enumeración sin leak (evita GetUnitsOfPlayerAll + ForGroupBJ)
+    set g = CreateGroup()
+    call GroupEnumUnitsOfPlayer(g, p, null)
+    call ForGroup(g, function Trig_hero_dies_Func008002)
+    call DestroyGroup(g)
+    set g = null
+
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[pid] + GetPlayerName(p) + udg_strings01[$A] + " fue asesinado por |r " + GetUnitName(GetKillingUnit()) + udg_strings01[$A] + "!!|r")
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[$A] + "Todas sus unidades y edificios fueron purgados. Revivirá en 1 minuto.")
+
+    set s = udg_strings01[$A] + "Respawnearas en |r " + I2S(udg_integer03 + 5) + ":" + I2S(udg_integer02) + udg_strings01[$A] + "."
+    call DisplayTimedTextToPlayer(p, 0.00, 0.00, 60.00, s)
+    // Timer en lugar de TriggerSleepAction (sin leaks)
+    set t = CreateTimer()
+    call SaveUnitHandle(udg_Hash_Revive, GetHandleId(t), 0, dying)
+    call TimerStart(t, 60.00, false, function HeroRespawn_AfterDelay)
+    // Limpieza
+    set s = null
+    set dying = null
+    set p = null
+    set t = null
+endfunction
+
+function Trig_all_heroes_death_WIN_Conditions takes nothing returns boolean
+	return((IsUnitType(GetDyingUnit(),UNIT_TYPE_HERO))and(IsUnitDeadBJ(udg_units01[1]))and(IsUnitDeadBJ(udg_units01[2]))and(IsUnitDeadBJ(udg_units01[3]))and(IsUnitDeadBJ(udg_units01[4]))and(IsUnitDeadBJ(udg_units01[5]))and(IsUnitDeadBJ(udg_units01[6]))and(IsUnitDeadBJ(udg_units01[7]))and(IsUnitDeadBJ(udg_units01[8]))and(IsUnitDeadBJ(udg_units01[9]))and(IsUnitDeadBJ(udg_units01[$A])))!=null
+endfunction
+
+function Trig_all_heroes_death_WIN_Func012002 takes nothing returns nothing
+	call PauseUnit(GetEnumUnit(),true)
+endfunction
+
+function Trig_all_heroes_death_WIN_Func013002 takes nothing returns nothing
+	call SetUnitInvulnerable(GetEnumUnit(),true)
+endfunction
+
+function Trig_all_heroes_death_WIN_Func020002 takes nothing returns nothing
+	call CustomVictoryBJ(GetEnumPlayer(),false,true)
+endfunction
+// -------------------------------------------------
+// Callbacks para evitar TriggerSleepAction leaks
+// -------------------------------------------------
+function Trig_all_heroes_death_WIN_Step2 takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    // Lo que antes estaba después de TriggerSleepAction(10.)
+    call ForForce(bj_FORCE_ALL_PLAYERS, function Trig_all_heroes_death_WIN_Func020002)
+    // destruir timer (evita leak)
+    call DestroyTimer(t)
+    set t = null
+endfunction
+
+function Trig_all_heroes_death_WIN_Step1 takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    // Lo que antes estaba después de TriggerSleepAction(1.)
+    call DisableTrigger(udg_trigger90)
+    call PlaySoundBJ(udg_sound04)
+    call DisableTrigger(udg_trigger65)
+    call DisableTrigger(udg_trigger76)
+    call DisableTrigger(udg_trigger77)
+    call DisableTrigger(udg_trigger78)
+    call DisableTrigger(udg_trigger79)
+    call DisableTrigger(udg_trigger72)
+    call ForGroupBJ(GetUnitsInRectAll(bj_mapInitialPlayableArea), function Trig_all_heroes_death_WIN_Func012002)
+    call ForGroupBJ(GetUnitsInRectAll(bj_mapInitialPlayableArea), function Trig_all_heroes_death_WIN_Func013002)
+    call FogMaskEnableOff()
+    call FogEnableOff()
+    call UseTimeOfDayBJ(false)
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, (udg_strings01[$A] + "Zombies han acabo con el mundo!!!"))
+    call PauseTimerBJ(true, udg_timer02)
+    // Programar la segunda parte en 10 segundos (se destruirá en Step2)
+    call TimerStart(CreateTimer(), 10.00, false, function Trig_all_heroes_death_WIN_Step2)
+    // destruir este timer (evita leak)
+    call DestroyTimer(t)
+    set t = null
+endfunction
+// -------------------------------------------------
+// Función principal (mantiene el nombre original)
+// -------------------------------------------------
+function Trig_all_heroes_death_WIN_Actions takes nothing returns nothing
+    // En lugar de TriggerSleepAction(1.), arrancamos un timer de 1s que llamará a Step1
+    call TimerStart(CreateTimer(), 1.00, false, function Trig_all_heroes_death_WIN_Step1)
+endfunction
+
+function Trig_statue_dies_WIN_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetDyingUnit()) == 'h01O'
+endfunction
+
+function Trig_statue_dies_WIN_GiveXP takes nothing returns nothing
+    call AddHeroXPSwapped(udg_integer10, GetEnumUnit(), true)
+endfunction
+
+function Trig_statue_dies_WIN_Actions takes nothing returns nothing
+    local unit u = GetDyingUnit()
+    local unit killer = GetKillingUnit()
+    local player p = GetOwningPlayer(killer)
+    local location loc = GetUnitLoc(u)
+    local group g
+    local integer roll
+    local integer count
+    local integer unitId
+    local string unitName
+    local effect e
+    // efecto
+    set e = AddSpecialEffectLoc("Objects\\Spawnmodels\\Human\\HCancelDeath\\HCancelDeath.mdl", loc)
+    call DestroyEffect(e)
+    // contador
+    set udg_integer12 = udg_integer12 - 1
+    // experiencia random
+    set udg_integer10 = GetRandomInt(2500, 5000)
+    // mensajes de quien mató
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[1 + GetPlayerId(p)] + GetPlayerName(p) + udg_strings01[10] + " ha destruido un Zombie Tower MKII!|r")
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, udg_strings01[10] + "Todos los heroes cerca de la torre destruida reciben|r " + I2S(udg_integer10) + udg_strings01[10] + " de experiencia!!|r")
+    // dar xp a héroes cercanos
+    set g = GetUnitsInRangeOfLocAll(750., loc)
+    call ForGroup(g, function Trig_statue_dies_WIN_GiveXP)
+    call DestroyGroup(g)
+    // elegir oleada
+    set udg_integer06 = GetRandomInt(1, 10)
+    set udg_integer11 = GetRandomInt(40, 90)
+    set roll = udg_integer06
+    set count = udg_integer11
+    // según roll, definimos unidad y nombre
+    if roll == 1 then
+        set unitId = 'z000'
+        set unitName = "Zerglings"
+    elseif roll == 2 then
+        set unitId = 'z001'
+        set unitName = "Skeletons"
+    elseif roll == 3 then
+        set unitId = 'z002'
+        set unitName = "Zombies"
+    elseif roll == 4 then
+        set unitId = 'z003'
+        set unitName = "Witches"
+    elseif roll == 5 then
+        set unitId = 'z004'
+        set unitName = "Cannibals"
+    elseif roll == 6 then
+        set unitId = 'u000'
+        set unitName = "Dark Warlocks"
+    elseif roll == 7 then
+        set unitId = 'u001'
+        set unitName = "Poltergeists"
+    elseif roll == 8 then
+        set unitId = 'u002'
+        set unitName = "Abominations"
+    elseif roll == 9 then
+        set unitId = 'n00K'
+        set unitName = "Knights"
+    elseif roll == 10 then
+        set unitId = 'n00S'
+        set unitName = "Herejes"
+    endif
+    // spawnear oleada
+    call CreateNUnitsAtLoc(count, unitId, Player(11), loc, bj_UNIT_FACING)
+    // mensaje de oleada
+    call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, I2S(count) + " " + unitName + " " + udg_strings01[10] + "has spawned!")
+    // limpiar leaks
+    call RemoveLocation(loc)
+    set u = null
+    set killer = null
+    set p = null
+    set loc = null
+    set g = null
+    set unitName = null
+endfunction
+// ===============================
+// Flags / Construcciones
+// ===============================
+function Trig_build_prima_data_langa_flag_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetEnteringUnit())=='h01A'
+endfunction
+
+function Trig_build_prima_data_langa_flag_Func001A takes nothing returns nothing
+    local unit en = GetEnteringUnit()
+    local unit u = GetEnumUnit()
+    if IsUnitType(u,UNIT_TYPE_STRUCTURE) and GetOwningPlayer(u)!=GetOwningPlayer(en) and GetUnitTypeId(u)=='h01A' then
+        call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(en)),udg_strings01[$A]+"You don't have permission to build a flag near "+udg_strings01[1+GetPlayerId(GetOwningPlayer(u))]+GetPlayerName(GetOwningPlayer(u))+udg_strings01[$A]+"'s territory!|r")
+        call KillUnit(en)
+    endif
+    set en=null
+    set u=null
+endfunction
+
+function Trig_build_prima_data_langa_flag_Actions takes nothing returns nothing
+    local group g = GetUnitsInRangeOfLocAll(1400.,GetUnitLoc(GetEnteringUnit()))
+    call ForGroup(g,function Trig_build_prima_data_langa_flag_Func001A)
+    call DestroyGroup(g)
+endfunction
+
+function Trig_build_prima_data_fara_flag_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetEnteringUnit())=='h01A'
+endfunction
+
+function Trig_build_prima_data_fara_flag_Func001A takes nothing returns nothing
+    local unit en = GetEnteringUnit()
+    local unit u = GetEnumUnit()
+    if IsUnitType(u,UNIT_TYPE_STRUCTURE) and GetOwningPlayer(u)!=GetOwningPlayer(en) and GetUnitTypeId(u)!='h01A' then
+        call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(en)),udg_strings01[$A]+"You don't have permission to build a flag near "+udg_strings01[1+GetPlayerId(GetOwningPlayer(u))]+GetPlayerName(GetOwningPlayer(u))+udg_strings01[$A]+"'s building!|r")
+        call KillUnit(en)
+    endif
+    set en=null
+    set u=null
+endfunction
+
+function Trig_build_prima_data_fara_flag_Actions takes nothing returns nothing
+    local group g = GetUnitsInRangeOfLocAll(1200.,GetUnitLoc(GetEnteringUnit()))
+    call ForGroup(g,function Trig_build_prima_data_fara_flag_Func001A)
+    call DestroyGroup(g)
+endfunction
+
+function Trig_build_near_flag_Conditions takes nothing returns boolean
+    return IsUnitType(GetEnteringUnit(),UNIT_TYPE_STRUCTURE) and GetUnitTypeId(GetEnteringUnit())!='h01A'
+endfunction
+
+function Trig_build_near_flag_Func001A takes nothing returns nothing
+    local unit en = GetEnteringUnit()
+    local unit u = GetEnumUnit()
+    if IsUnitType(u,UNIT_TYPE_STRUCTURE) and GetOwningPlayer(u)!=GetOwningPlayer(en) and GetUnitTypeId(u)=='h01A' then
+        call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(en)),udg_strings01[$A]+"No tienes permiso de"+udg_strings01[1+GetPlayerId(GetOwningPlayer(u))]+GetPlayerName(GetOwningPlayer(u))+udg_strings01[$A]+"para construir en su base!|r")
+        call KillUnit(en)
+    endif
+    set en=null
+    set u=null
+endfunction
+
+function Trig_build_near_flag_Actions takes nothing returns nothing
+    local group g = GetUnitsInRangeOfLocAll(700.,GetUnitLoc(GetEnteringUnit()))
+    call ForGroup(g,function Trig_build_near_flag_Func001A)
+    call DestroyGroup(g)
+endfunction
+// ===============================
+// Flag limit
+// ===============================
+function Trig_flag_limit_Func001A takes nothing returns nothing
+    call SetPlayerTechMaxAllowedSwap('h01A',1,GetEnumPlayer())
+endfunction
+
+function Trig_flag_limit_Actions takes nothing returns nothing
+    call ForForce(bj_FORCE_ALL_PLAYERS,function Trig_flag_limit_Func001A)
+endfunction
+// ===============================
+// Endurance Aura
+// ===============================
+function Trig_Endurance_Aura_Func005C takes nothing returns boolean
+    local integer id = GetUnitTypeId(GetDyingUnit())
+    return id=='n00A' or id=='n00H' or id=='n009' or id=='n008'
+endfunction
+
+function Trig_Endurance_Aura_Conditions takes nothing returns boolean
+    return GetUnitTypeId(GetKillingUnit())=='H01D' and GetOwningPlayer(GetDyingUnit())==Player($F) and Trig_Endurance_Aura_Func005C()
+endfunction
+
+function Trig_Endurance_Aura_Func002C takes nothing returns boolean
+    return GetUnitAbilityLevelSwapped('S000',GetKillingUnit())!=$A and udg_integers21[1+GetPlayerId(GetOwningPlayer(GetKillingUnit()))]==10
+endfunction
+
+function Trig_Endurance_Aura_Actions takes nothing returns nothing
+    local integer pid = 1+GetPlayerId(GetOwningPlayer(GetKillingUnit()))
+    set udg_integers21[pid]=udg_integers21[pid]+1
+    if Trig_Endurance_Aura_Func002C() then
+        call SetUnitAbilityLevelSwapped('S000',GetKillingUnit(),GetUnitAbilityLevelSwapped('S000',GetKillingUnit())+1)
+        call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(GetKillingUnit())),udg_strings01[$A]+"Aura de Resistencia de Gran Lobo subió al nivel: "+I2S(GetUnitAbilityLevelSwapped('S000',GetKillingUnit()))+".")
+        set udg_integers21[pid]=0
+        set udg_integers24[pid]=udg_integers24[pid]+1
+    endif
+endfunction
+// ===============================
+// Entorno / Slots / Prioridades
+// ===============================
+function Trig_Init_envi_Actions takes nothing returns nothing
+    call AddWeatherEffectSaveLast(udg_rect10,'RAlr')
+    call EnableWeatherEffect(bj_lastCreatedWeatherEffect,true)
+    call AddWeatherEffectSaveLast(udg_rect11,'FDrl')
+    call EnableWeatherEffect(bj_lastCreatedWeatherEffect,true)
+    call AddWeatherEffectSaveLast(udg_rect12,'FDrl')
+    call EnableWeatherEffect(bj_lastCreatedWeatherEffect,true)
+    call AddWeatherEffectSaveLast(udg_rect13,'FDrl')
+    call EnableWeatherEffect(bj_lastCreatedWeatherEffect,true)
+endfunction
+
+function InitCustomPlayerSlots2 takes nothing returns nothing
+    local integer i=0
+    loop
+        exitwhen i>9
+        call SetPlayerStartLocation(Player(i), i)
+        call ForcePlayerStartLocation(Player(i), i)
+        call SetPlayerColor(Player(i), ConvertPlayerColor(i))
+        call SetPlayerRacePreference(Player(i), RACE_PREF_HUMAN)
+        call SetPlayerRaceSelectable(Player(i), false)
+        call SetPlayerController(Player(i), MAP_CONTROL_USER)
+        set i=i+1
+    endloop
+    call SetPlayerStartLocation(Player(11),10)
+    call ForcePlayerStartLocation(Player(11),10)
+    call SetPlayerColor(Player(11),ConvertPlayerColor(11))
+    call SetPlayerRacePreference(Player(11),RACE_PREF_UNDEAD)
+    call SetPlayerRaceSelectable(Player(11),false)
+    call SetPlayerController(Player(11),MAP_CONTROL_COMPUTER)
+endfunction
+
+function InitAllyPriorities2 takes nothing returns nothing
+    call SetStartLocPrioCount(0,2)
+    call SetStartLocPrio(0,0,1,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(0,1,5,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrioCount(1,3)
+    call SetStartLocPrio(1,0,0,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(1,1,2,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(1,2,6,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrioCount(2,3)
+    call SetStartLocPrio(2,0,1,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(2,1,3,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(2,2,7,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrioCount(3,3)
+    call SetStartLocPrio(3,0,2,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(3,1,4,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(3,2,8,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrioCount(4,2)
+    call SetStartLocPrio(4,0,3,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(4,1,9,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrioCount(5,2)
+    call SetStartLocPrio(5,0,0,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrio(5,1,6,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrioCount(6,3)
+    call SetStartLocPrio(6,0,1,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrio(6,1,5,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(6,2,7,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrioCount(7,3)
+    call SetStartLocPrio(7,0,2,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrio(7,1,6,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(7,2,8,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrioCount(8,3)
+    call SetStartLocPrio(8,0,3,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrio(8,1,7,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(8,2,9,MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrioCount(9,2)
+    call SetStartLocPrio(9,0,4,MAP_LOC_PRIO_LOW)
+    call SetStartLocPrio(9,1,8,MAP_LOC_PRIO_HIGH)
+endfunction
+
+function CreateSoundHelper takes string path, integer duration, integer volume returns sound
+    local sound s = CreateSound(path, false, false, false, 10, 10, "")
+    call SetSoundDuration(s, duration)
+    call SetSoundChannel(s, 0)
+    call SetSoundVolume(s, volume)
+    call SetSoundPitch(s, 1.0)
+    return s
+endfunction
+
+function InitializeSounds takes nothing returns nothing
+    set udg_sound01 = CreateSoundHelper("war3mapImported\\nemesis2.mp3", 4365, 127)
+    set udg_sound02 = CreateSoundHelper("war3mapImported\\timestart.mp3", 6922, 180)
+    set udg_sound03 = CreateSoundHelper("war3mapImported\\win_humans1.mp3", 6145, 127)
+    set udg_sound04 = CreateSoundHelper("war3mapImported\\zombie_win1.mp3", 9297, 127)
+    set udg_sound05 = CreateSoundHelper("war3mapImported\\zombie_infec1.mp3", 1313, 127)
+    set udg_sound06 = CreateSoundHelper("war3mapImported\\Cuenta_Regresiva.mp3", 999, 100)
+    set udg_sound07 = CreateSoundHelper("war3mapImported\\BMS_PU1.mp3", 999, 255)
+    set udg_sound08 = CreateSoundHelper("war3mapImported\\Baron_Darkclaw.mp3", 999, 255)
+    set udg_sound09 = CreateSoundHelper("war3mapImported\\Humpty_Dumpty.mp3", 999, 255)
+    set udg_sound10 = CreateSoundHelper("war3mapImported\\Revelations.mp3", 999, 150)
+    set udg_sound11 = CreateSoundHelper("war3mapImported\\The_Voice_Of_The_Night.mp3", 999, 150)
+    set udg_sound12 = CreateSoundHelper("war3mapImported\\Gaurhaudh.mp3", 999, 255)
+    set udg_sound13 = CreateSoundHelper("war3mapImported\\Prospero04.mp3", 999, 255)
+    set udg_sound14 = CreateSoundHelper("war3mapImported\\Prospero05.mp3", 999, 255)
+    set udg_sound16 = CreateSoundHelper("war3mapImported\\nemesis2.mp3", 4365, 127)
+    set udg_sound17 = CreateSoundHelper("war3mapImported\\warcry.mp3", 999, 145)
+endfunction
+
+function InitializeRects takes nothing returns nothing
+    set udg_rect08 = Rect(3008., -6048., 6048., 6048.)
+    set udg_rect10 = Rect(2976., -6144., 6112., 6112.)
+    set udg_rect11 = Rect(640., 2624., 2816., 5920.)
+    set udg_rect12 = Rect(-6144., 3424., -4320., 6112.)
+    set udg_rect13 = Rect(-6112., -4256., -4224., -1504.)
+endfunction
+
+function InitializeDestructables takes nothing returns nothing
+    set udg_destructable05 = CreateDestructable('ATtc', -2208., 1120., 270., 1., 1)
+    set udg_destructable03 = CreateDestructable('ATtc', -2208., 672., 270., 1., 1)
+    set udg_destructable04 = CreateDestructable('ATtc', -3040., 672., 270., 1., 0)
+    set udg_destructable06 = CreateDestructable('ATtc', -3040., 1120., 270., 1., 1)
+    set udg_destructable20 = CreateDestructable('B000', 1772., 5406., 270., 0.9, 0)
+    set udg_destructable02 = CreateDestructable('LTg1', 1856., 3456., 270., 0.9, 0)
+    set udg_destructable07 = CreateDestructable('LTg1', -5184., 4096., 270., 0.9, 0)
+    set udg_destructable12 = CreateDestructable('LTg1', -5312., -2176., 270., 0.9, 0)
+    set udg_destructable10 = CreateDestructable('LTg1', -5312., -3712., 270., 0.9, 0)
+    set udg_destructable08 = CreateDestructable('LTg3', -4480., 4544., 0.0, 0.9, 0)
+    set udg_destructable11 = CreateDestructable('LTg3', -4736., -2624., 0.0, 0.9, 0)
+    set udg_destructable01 = CreateDestructable('LTg3', 1152., 4544., 0.0, 0.9, 0)
+    set udg_destructable09 = CreateDestructable('LTg3', -4480., 5312., 0.0, 0.9, 0)
+endfunction
+
+function InitializeArrays takes nothing returns nothing
+    local integer i = 0
+    loop
+        exitwhen(i > 1)
+        set udg_strings01[i] = ""
+        set udg_integers01[i] = 0
+        set udg_integers02[i] = 0
+        set udg_integers03[i] = 0
+        set udg_integers04[i] = 0
+        set udg_integers05[i] = 0
+        set udg_booleans01[i] = false
+        set udg_integers06[i] = 0
+        set udg_units03[i] = null
+        set udg_integers07[i] = 0
+        set udg_integers08[i] = 0
+        set udg_integers09[i] = 0
+        set udg_integers10[i] = 0
+        set udg_integers11[i] = 0
+        set udg_integers12[i] = 0
+        set udg_booleans02[i] = false
+        set udg_integers13[i] = 0
+        set udg_integers14[i] = 0
+        set udg_integers15[i] = 0
+        set udg_integers16[i] = 0
+        set udg_integers17[i] = 0
+        set udg_integers18[i] = 0
+        set udg_booleans03[i] = false
+        set udg_integers19[i] = 0
+        set udg_integers20[i] = 0
+        set udg_integers21[i] = 0
+        set udg_integers22[i] = 0
+        set udg_integers23[i] = 0
+        set udg_integers24[i] = 0
+        set udg_integers25[i] = 0
+        set udg_integers26[i] = 0
+        set udg_integers27[i] = 0
+        set udg_booleans04[i] = false
+        set udg_integers28[i] = 0
+        set udg_integers29[i] = 0
+        set udg_integers31[i] = 0
+        set i = i + 1
+    endloop
+endfunction
+
+function RegisterChatTrigger takes trigger t returns nothing
+    local integer i = 0
+    loop
+        exitwhen(i > 9)
+        call TriggerRegisterPlayerChatEvent(t, Player(i), "", false)
+        set i = i + 1
+    endloop
+endfunction
+
+function RegisterLeaveTrigger takes trigger t returns nothing
+    local integer i = 0
+    loop
+        exitwhen(i > 9)
+        call TriggerRegisterPlayerEventLeave(t, Player(i))
+        set i = i + 1
+    endloop
+endfunction
+
+function InitializeTriggers takes nothing returns nothing
+    // Tips trigger
+    set udg_trigger05 = CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(udg_trigger05, 300.)
+    call TriggerAddAction(udg_trigger05, function Trig_Tips_Actions)
+    
+    // Poison ward triggers (L1-L4)
+    set udg_trigger06 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger06, EVENT_PLAYER_UNIT_UPGRADE_START)
+    call TriggerAddCondition(udg_trigger06, Condition(function Trig_poison_ward_l1_Conditions))
+    call TriggerAddAction(udg_trigger06, function Trig_poison_ward_l1_Actions)
+    
+    set udg_trigger07 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger07, EVENT_PLAYER_UNIT_UPGRADE_START)
+    call TriggerAddCondition(udg_trigger07, Condition(function Trig_poison_ward_l2_Conditions))
+    call TriggerAddAction(udg_trigger07, function Trig_poison_ward_l2_Actions)
+    
+    set udg_trigger08 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger08, EVENT_PLAYER_UNIT_UPGRADE_START)
+    call TriggerAddCondition(udg_trigger08, Condition(function Trig_poison_ward_l3_Conditions))
+    call TriggerAddAction(udg_trigger08, function Trig_poison_ward_l3_Actions)
+    
+    set udg_trigger09 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger09, EVENT_PLAYER_UNIT_UPGRADE_START)
+    call TriggerAddCondition(udg_trigger09, Condition(function Trig_poison_ward_l4_Conditions))
+    call TriggerAddAction(udg_trigger09, function Trig_poison_ward_l4_Actions)
+    
+    // Poison ward death triggers
+    set udg_trigger10 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger10, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger10, Condition(function Trig_poison_ward_dies_l1_Conditions))
+    call TriggerAddAction(udg_trigger10, function Trig_poison_ward_dies_l1_Actions)
+    
+    set udg_trigger11 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger11, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger11, Condition(function Trig_poison_ward_dies_l2_Conditions))
+    call TriggerAddAction(udg_trigger11, function Trig_poison_ward_dies_l2_Actions)
+    
+    set udg_trigger12 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger12, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger12, Condition(function Trig_poison_ward_dies_l3_Conditions))
+    call TriggerAddAction(udg_trigger12, function Trig_poison_ward_dies_l3_Actions)
+    
+    set udg_trigger13 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger13, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger13, Condition(function Trig_poison_ward_dies_l4_Conditions))
+    call TriggerAddAction(udg_trigger13, function Trig_poison_ward_dies_l4_Actions)
+    
+    // Other gameplay triggers
+    set udg_trigger14 = CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(udg_trigger14, 1.)
+    call TriggerAddAction(udg_trigger14, function Trig_Regrow_Trees_Actions)
+    
+    set udg_trigger15 = CreateTrigger()
+    call TriggerRegisterTimerEventSingle(udg_trigger15, 0.0)
+    call TriggerAddAction(udg_trigger15, function Trig_visibility_Actions)
+    
+    // Chat triggers
+    set udg_trigger16 = CreateTrigger()
+    call RegisterChatTrigger(udg_trigger16)
+    call TriggerAddAction(udg_trigger16, function Trig_move_item_Actions)
+    
+    set udg_trigger17 = CreateTrigger()
+    call RegisterChatTrigger(udg_trigger17)
+    call TriggerAddAction(udg_trigger17, function Trig_take_item_Actions)
+    
+    set udg_trigger18 = CreateTrigger()
+    call RegisterChatTrigger(udg_trigger18)
+    call TriggerAddAction(udg_trigger18, function Trig_dropp_pick_items_Actions)
+    
+    // Death/kill triggers
+    set udg_trigger20 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger20, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger20, Condition(function Trig_hero_kill_sansa_carte_animale_Conditions))
+    call TriggerAddAction(udg_trigger20, function Trig_hero_kill_sansa_carte_animale_Actions)
+    
+    set udg_trigger34 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger34, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger34, Condition(function Trig_zombie_kill_effects_Conditions))
+    call TriggerAddAction(udg_trigger34, function Trig_zombie_kill_effects_Actions)
+    
+    // Forest/building triggers
+    set udg_trigger55 = CreateTrigger()
+    call TriggerRegisterEnterRectSimple(udg_trigger55, udg_rect10)
+    call TriggerAddCondition(udg_trigger55, Condition(function Trig_no_build_in_trees_Conditions))
+    call TriggerAddAction(udg_trigger55, function Trig_no_build_in_trees_Actions)
+    
+    set udg_trigger56 = CreateTrigger()
+    call TriggerRegisterEnterRectSimple(udg_trigger56, udg_rect10)
+    call TriggerAddCondition(udg_trigger56, Condition(function Trig_enter_in_padure_Conditions))
+    call TriggerAddAction(udg_trigger56, function Trig_enter_in_padure_Actions)
+    
+    set udg_trigger57 = CreateTrigger()
+    call TriggerRegisterTimerEventSingle(udg_trigger57, 0.0)
+    call TriggerAddAction(udg_trigger57, function Trig_INITIALIZATION_Actions)
+    
+    // Chest triggers
+    set udg_trigger59 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger59, EVENT_PLAYER_UNIT_CONSTRUCT_FINISH)
+    call TriggerAddCondition(udg_trigger59, Condition(function Trig_Chest_enter_Conditions))
+    call TriggerAddAction(udg_trigger59, function Trig_Chest_enter_Actions)
+    
+    set udg_trigger60 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger60, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger60, Condition(function Trig_Chest_dies_Conditions))
+    call TriggerAddAction(udg_trigger60, function Trig_Chest_dies_Actions)
+    
+    // Building/spell triggers
+    set udg_trigger61 = CreateTrigger()
+    call TriggerRegisterEnterRectSimple(udg_trigger61, bj_mapInitialPlayableArea)
+    call TriggerAddCondition(udg_trigger61, Condition(function Trig_gold_mine_build_Conditions))
+    call TriggerAddAction(udg_trigger61, function Trig_gold_mine_build_Actions)
+    
+    set udg_trigger62 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger62, EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(udg_trigger62, Condition(function Trig_Demolisher_Conditions))
+    call TriggerAddAction(udg_trigger62, function Trig_Demolisher_Actions)
+    
+    set udg_trigger63 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger63, EVENT_PLAYER_HERO_SKILL)
+    call TriggerAddCondition(udg_trigger63, Condition(function Trig_take_aim_ability_Conditions))
+    call TriggerAddAction(udg_trigger63, function Trig_take_aim_ability_Actions)
+    
+    set udg_trigger64 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger64, EVENT_PLAYER_UNIT_SELL)
+    call TriggerAddCondition(udg_trigger64, Condition(function Trig_Hero_Sold_Conditions))
+    call TriggerAddAction(udg_trigger64, function Trig_Hero_Sold_Actions)
+    
+    // Timer triggers
+    set udg_trigger65 = CreateTrigger()
+    call DisableTrigger(udg_trigger65)
+    call TriggerRegisterTimerEventPeriodic(udg_trigger65, 1.)
+    call TriggerAddAction(udg_trigger65, function Trig_every_seconds_Actions)
+    
+    // Dialog triggers
+    set udg_trigger67 = CreateTrigger()
+    call TriggerRegisterDialogEvent(udg_trigger67, udg_dialog01)
+    call TriggerAddCondition(udg_trigger67, Condition(function Trig_Clicked_easy_Conditions))
+    call TriggerAddAction(udg_trigger67, function Trig_Clicked_easy_Actions)
+    
+    set udg_trigger68 = CreateTrigger()
+    call TriggerRegisterDialogEvent(udg_trigger68, udg_dialog01)
+    call TriggerAddCondition(udg_trigger68, Condition(function Trig_Clicked_normal_Conditions))
+    call TriggerAddAction(udg_trigger68, function Trig_Clicked_normal_Actions)
+    
+    set udg_trigger69 = CreateTrigger()
+    call TriggerRegisterDialogEvent(udg_trigger69, udg_dialog01)
+    call TriggerAddCondition(udg_trigger69, Condition(function Trig_Clicked_hard_Conditions))
+    call TriggerAddAction(udg_trigger69, function Trig_Clicked_hard_Actions)
+    
+    // Anti-abuse triggers
+    set udg_trigger70 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger70, EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(udg_trigger70, Condition(function Trig_Anti_Ally_Kills_Conditions))
+    call TriggerAddAction(udg_trigger70, function Trig_Anti_Ally_Kills_Actions)
+    
+    set udg_trigger71 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger71, EVENT_PLAYER_UNIT_ATTACKED)
+    call TriggerAddCondition(udg_trigger71, Condition(function Trig_Anti_hero_kill_Conditions))
+    call TriggerAddAction(udg_trigger71, function Trig_Anti_hero_kill_Actions)
+    
+    // Timer expire triggers
+    set udg_trigger72 = CreateTrigger()
+    call TriggerRegisterTimerExpireEvent(udg_trigger72, udg_timer01)
+    call TriggerAddAction(udg_trigger72, function Trig_Timer_Expire_Actions)
+    
+    set udg_trigger73 = CreateTrigger()
+    call TriggerRegisterTimerExpireEvent(udg_trigger73, udg_timer02)
+    call TriggerAddAction(udg_trigger73, function Trig_LoseTimer_Expire_Actions)
+    
+    set udg_trigger74 = CreateTrigger()
+    call DisableTrigger(udg_trigger74)
+    call TriggerRegisterTimerEventPeriodic(udg_trigger74, 0.1)
+    call TriggerAddAction(udg_trigger74, function Trig_Select_mereu_tavern_la_inceput_Actions)
+    
+    // Zombie/boss triggers
+    set udg_trigger83 = CreateTrigger()
+    call DisableTrigger(udg_trigger83)
+    call TriggerRegisterTimerEventPeriodic(udg_trigger83, 90.)
+    call TriggerAddAction(udg_trigger83, function Trig_Zombie_Upgrade_Actions)
+    
+    set udg_trigger84 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger84, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger84, Condition(function Trig_boss_killed_Conditions))
+    call TriggerAddAction(udg_trigger84, function Trig_boss_killed_Actions)
+    
+    set udg_trigger85 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger85, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger85, Condition(function Trig_Kills_Conditions))
+    call TriggerAddAction(udg_trigger85, function Trig_Kills_Actions)
+    
+    set udg_trigger86 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger86, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger86, Condition(function Trig_Deaths_Conditions))
+    call TriggerAddAction(udg_trigger86, function Trig_Deaths_Actions)
+    
+    // Player leave trigger
+    set udg_trigger90 = CreateTrigger()
+    call RegisterLeaveTrigger(udg_trigger90)
+    call TriggerAddAction(udg_trigger90, function Trig_player_leaves_Actions)
+    
+    // Death/win condition triggers
+    set udg_trigger91 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger91, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger91, Condition(function Trig_builder_dies_Conditions))
+    call TriggerAddAction(udg_trigger91, function Trig_builder_dies_Actions)
+    
+    set udg_trigger92 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger92, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger92, Condition(function Trig_hero_dies_Conditions))
+    call TriggerAddAction(udg_trigger92, function Trig_hero_dies_Actions)
+    
+    set udg_trigger93 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger93, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger93, Condition(function Trig_all_heroes_death_WIN_Conditions))
+    call TriggerAddAction(udg_trigger93, function Trig_all_heroes_death_WIN_Actions)
+    
+    set udg_trigger94 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger94, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger94, Condition(function Trig_statue_dies_WIN_Conditions))
+    call TriggerAddAction(udg_trigger94, function Trig_statue_dies_WIN_Actions)
+    
+    // Building flag triggers
+    set udg_trigger183 = CreateTrigger()
+    call TriggerRegisterEnterRectSimple(udg_trigger183, bj_mapInitialPlayableArea)
+    call TriggerAddCondition(udg_trigger183, Condition(function Trig_build_prima_data_langa_flag_Conditions))
+    call TriggerAddAction(udg_trigger183, function Trig_build_prima_data_langa_flag_Actions)
+    
+    set udg_trigger184 = CreateTrigger()
+    call TriggerRegisterEnterRectSimple(udg_trigger184, bj_mapInitialPlayableArea)
+    call TriggerAddCondition(udg_trigger184, Condition(function Trig_build_prima_data_fara_flag_Conditions))
+    call TriggerAddAction(udg_trigger184, function Trig_build_prima_data_fara_flag_Actions)
+    
+    set udg_trigger185 = CreateTrigger()
+    call TriggerRegisterEnterRectSimple(udg_trigger185, bj_mapInitialPlayableArea)
+    call TriggerAddCondition(udg_trigger185, Condition(function Trig_build_near_flag_Conditions))
+    call TriggerAddAction(udg_trigger185, function Trig_build_near_flag_Actions)
+    
+    set udg_trigger186 = CreateTrigger()
+    call TriggerRegisterTimerEventSingle(udg_trigger186, 0.0)
+    call TriggerAddAction(udg_trigger186, function Trig_flag_limit_Actions)
+    
+    // Endurance aura trigger
+    set udg_trigger211 = CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trigger211, EVENT_PLAYER_UNIT_DEATH)
+    call TriggerAddCondition(udg_trigger211, Condition(function Trig_Endurance_Aura_Conditions))
+    call TriggerAddAction(udg_trigger211, function Trig_Endurance_Aura_Actions)
+    
+    // Environment initialization
+    set udg_trigger224 = CreateTrigger()
+    call TriggerRegisterTimerEventSingle(udg_trigger224, 0.01)
+    call TriggerAddAction(udg_trigger224, function Trig_Init_envi_Actions)
+endfunction
+
+function main2 takes nothing returns nothing
+    local integer i
+    
+    // Initialize camera and environment
+    call SetCameraBounds(-6144.+GetCameraMargin(CAMERA_MARGIN_LEFT), -6144.+GetCameraMargin(CAMERA_MARGIN_BOTTOM), 6144.-GetCameraMargin(CAMERA_MARGIN_RIGHT), 6144.-GetCameraMargin(CAMERA_MARGIN_TOP), -6144.+GetCameraMargin(CAMERA_MARGIN_LEFT), 6144.-GetCameraMargin(CAMERA_MARGIN_TOP), 6144.-GetCameraMargin(CAMERA_MARGIN_RIGHT), -6144.+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+    call SetDayNightModels("Environment\\DNC\\DNCAshenvale\\DNCAshenvaleTerrain\\DNCAshenvaleTerrain.mdl", "Environment\\DNC\\DNCAshenvale\\DNCAshenvaleUnit\\DNCAshenvaleUnit.mdl")
+    call SetWaterBaseColor(0, 0, 255, 255)
+    call NewSoundEnvironment("Default")
+    call SetAmbientDaySound("AshenvaleDay")
+    call SetAmbientNightSound("AshenvaleNight")
+    call SetMapMusic("Music", true, 0)
+    
+    // Initialize all components
+    call InitializeSounds()
+    call InitializeRects()
+    call InitializeDestructables()
+    call CreateNeutralPassiveBuildings2()
+    call CreatePlayerBuildings2()
+    call InitializeArrays()
+    
+    // Initialize dialogs, timers, and groups
+    set udg_dialog01 = DialogCreate()
+    set udg_timer01 = CreateTimer()
+    set udg_force01 = CreateForce()
+    set udg_group01 = CreateGroup()
+    set udg_dialog02 = DialogCreate()
+    set udg_timer02 = CreateTimer()
+    
+    // Initialize all triggers
+    call InitializeTriggers()
+endfunction
+
+function InitTrig_init takes nothing returns nothing    
+    call ExecuteFunc("main2")
+endfunction
