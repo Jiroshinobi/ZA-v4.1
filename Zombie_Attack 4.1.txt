@@ -1,58 +1,3 @@
-function InitGlobals2 takes nothing returns nothing
-    local integer i = 0    
-    // Inicializar arrays
-    loop
-        exitwhen i > 1        
-        // Strings y booleans
-        set udg_strings01[i] = ""
-        set udg_booleans01[i] = false
-        set udg_booleans02[i] = false
-        set udg_booleans03[i] = false
-        set udg_booleans04[i] = false        
-        // Units
-        set udg_units03[i] = null        
-        // Integers
-        set udg_integers01[i] = 0
-        set udg_integers02[i] = 0
-        set udg_integers03[i] = 0
-        set udg_integers04[i] = 0
-        set udg_integers05[i] = 0
-        set udg_integers06[i] = 0
-        set udg_integers07[i] = 0
-        set udg_integers08[i] = 0
-        set udg_integers09[i] = 0
-        set udg_integers10[i] = 0
-        set udg_integers11[i] = 0
-        set udg_integers12[i] = 0
-        set udg_integers13[i] = 0
-        set udg_integers14[i] = 0
-        set udg_integers15[i] = 0
-        set udg_integers16[i] = 0
-        set udg_integers17[i] = 0
-        set udg_integers18[i] = 0
-        set udg_integers19[i] = 0
-        set udg_integers20[i] = 0
-        set udg_integers21[i] = 0
-        set udg_integers22[i] = 0
-        set udg_integers23[i] = 0
-        set udg_integers24[i] = 0
-        set udg_integers25[i] = 0
-        set udg_integers26[i] = 0
-        set udg_integers27[i] = 0
-        set udg_integers28[i] = 0
-        set udg_integers29[i] = 0
-        set udg_integers31[i] = 0        
-        set i = i + 1
-    endloop    
-    // Crear objetos globales
-    set udg_dialog01 = DialogCreate()
-    set udg_dialog02 = DialogCreate()
-    set udg_timer01 = CreateTimer()
-    set udg_timer02 = CreateTimer()
-    set udg_force01 = CreateForce()
-    set udg_group01 = CreateGroup()
-endfunction
-
 function CreateNeutralPassiveBuildings2 takes nothing returns nothing
     local player p = Player(15) // Player 15 ($F en hexadecimal)
     local unit u
@@ -87,8 +32,9 @@ function CreatePlayerBuildings2 takes nothing returns nothing
 endfunction
 
 function TipsCallback takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     local integer random = GetRandomInt(0, 5)
-    local string message = ""
+    local string message = ""	
     
     if random == 0 then
         set message = udg_strings01[10] + "[Tip] Para ganar la partida debes destruir todos los Zombie Towers."
@@ -107,6 +53,7 @@ function TipsCallback takes nothing returns nothing
 endfunction
 
 function Trig_Tips_Actions takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     local timer t = CreateTimer()    
     // Mostrar primer tip inmediatamente
     call TipsCallback()    
@@ -596,10 +543,12 @@ function Trig_INITIALIZATION_Func102C takes nothing returns boolean
 endfunction
 
 function ExecuteDifficultyTrigger takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call ConditionalTriggerExecute(udg_trigger58)
 endfunction
 
 function AfterCountdown takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     // --- Selección o forzado de dificultad ---
     if (Trig_INITIALIZATION_Func102C()) then
         // diálogo dificultad manual (solo Player 0)
@@ -621,11 +570,13 @@ function AfterCountdown takes nothing returns nothing
 endfunction
 
 function StartCountdown takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, "|cff8C98ffEl Juego comienza en |r 5 |cff8C98ffsegundos.|r")
     call TimerStart(CreateTimer(), 5.00, false, function AfterCountdown)
 endfunction
 
 function InitMessage takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, "|cffff0000JS - Punk presents:|r Zombie Attack (v4.0) Updated.")
     call DisplayTextToForce(bj_FORCE_ALL_PLAYERS, "|cff8C98ffPuedes obtener la versión original v2.8 de ade206 en|r|cff00ffff www.hiveworkshop.com|r")
     // mensaje del countdown
@@ -732,26 +683,31 @@ function Trig_Clicked_normal_Actions takes nothing returns nothing
 endfunction
 
 function Loop1 takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call SetSoundVolumeBJ(udg_sound13, 120.)
     call PlaySoundBJ(udg_sound13)
 endfunction
 
 function Loop2 takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call SetSoundVolumeBJ(udg_sound10, 120.)
     call PlaySoundBJ(udg_sound10)
 endfunction
 
 function Loop3 takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call SetSoundVolumeBJ(udg_sound10, 120.)
     call PlaySoundBJ(udg_sound10)
 endfunction
 
 function Loop4 takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call SetSoundVolumeBJ(udg_sound11, 120.)
     call PlaySoundBJ(udg_sound11)
 endfunction
 
 function Ending takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
     call SetSoundVolumeBJ(udg_sound11, 120.)
     call PlaySoundBJ(udg_sound11)
 endfunction
@@ -1727,406 +1683,403 @@ function InitAllyPriorities2 takes nothing returns nothing
     call SetStartLocPrio(9,1,8,MAP_LOC_PRIO_HIGH)
 endfunction
 
-function CreateSoundHelper takes string path, integer duration, integer volume returns sound
-    local sound s = CreateSound(path, false, false, false, 10, 10, "")
-    call SetSoundDuration(s, duration)
-    call SetSoundChannel(s, 0)
-    call SetSoundVolume(s, volume)
-    call SetSoundPitch(s, 1.0)
-    return s
-endfunction
-
-function InitializeSounds takes nothing returns nothing
-    set udg_sound01 = CreateSoundHelper("war3mapImported\\nemesis2.mp3", 4365, 127)
-    set udg_sound02 = CreateSoundHelper("war3mapImported\\timestart.mp3", 6922, 180)
-    set udg_sound03 = CreateSoundHelper("war3mapImported\\win_humans1.mp3", 6145, 127)
-    set udg_sound04 = CreateSoundHelper("war3mapImported\\zombie_win1.mp3", 9297, 127)
-    set udg_sound05 = CreateSoundHelper("war3mapImported\\zombie_infec1.mp3", 1313, 127)
-    set udg_sound06 = CreateSoundHelper("war3mapImported\\Cuenta_Regresiva.mp3", 999, 100)
-    set udg_sound07 = CreateSoundHelper("war3mapImported\\BMS_PU1.mp3", 999, 255)
-    set udg_sound08 = CreateSoundHelper("war3mapImported\\Baron_Darkclaw.mp3", 999, 255)
-    set udg_sound09 = CreateSoundHelper("war3mapImported\\Humpty_Dumpty.mp3", 999, 255)
-    set udg_sound10 = CreateSoundHelper("war3mapImported\\Revelations.mp3", 999, 150)
-    set udg_sound11 = CreateSoundHelper("war3mapImported\\The_Voice_Of_The_Night.mp3", 999, 150)
-    set udg_sound12 = CreateSoundHelper("war3mapImported\\Gaurhaudh.mp3", 999, 255)
-    set udg_sound13 = CreateSoundHelper("war3mapImported\\Prospero04.mp3", 999, 255)
-    set udg_sound14 = CreateSoundHelper("war3mapImported\\Prospero05.mp3", 999, 255)
-    set udg_sound16 = CreateSoundHelper("war3mapImported\\nemesis2.mp3", 4365, 127)
-    set udg_sound17 = CreateSoundHelper("war3mapImported\\warcry.mp3", 999, 145)
-endfunction
-
-function InitializeRects takes nothing returns nothing
-    set udg_rect08 = Rect(3008., -6048., 6048., 6048.)
-    set udg_rect10 = Rect(2976., -6144., 6112., 6112.)
-    set udg_rect11 = Rect(640., 2624., 2816., 5920.)
-    set udg_rect12 = Rect(-6144., 3424., -4320., 6112.)
-    set udg_rect13 = Rect(-6112., -4256., -4224., -1504.)
-endfunction
-
-function InitializeDestructables takes nothing returns nothing
-    set udg_destructable05 = CreateDestructable('ATtc', -2208., 1120., 270., 1., 1)
-    set udg_destructable03 = CreateDestructable('ATtc', -2208., 672., 270., 1., 1)
-    set udg_destructable04 = CreateDestructable('ATtc', -3040., 672., 270., 1., 0)
-    set udg_destructable06 = CreateDestructable('ATtc', -3040., 1120., 270., 1., 1)
-    set udg_destructable20 = CreateDestructable('B000', 1772., 5406., 270., 0.9, 0)
-    set udg_destructable02 = CreateDestructable('LTg1', 1856., 3456., 270., 0.9, 0)
-    set udg_destructable07 = CreateDestructable('LTg1', -5184., 4096., 270., 0.9, 0)
-    set udg_destructable12 = CreateDestructable('LTg1', -5312., -2176., 270., 0.9, 0)
-    set udg_destructable10 = CreateDestructable('LTg1', -5312., -3712., 270., 0.9, 0)
-    set udg_destructable08 = CreateDestructable('LTg3', -4480., 4544., 0.0, 0.9, 0)
-    set udg_destructable11 = CreateDestructable('LTg3', -4736., -2624., 0.0, 0.9, 0)
-    set udg_destructable01 = CreateDestructable('LTg3', 1152., 4544., 0.0, 0.9, 0)
-    set udg_destructable09 = CreateDestructable('LTg3', -4480., 5312., 0.0, 0.9, 0)
-endfunction
-
-function InitializeArrays takes nothing returns nothing
-    local integer i = 0
-    loop
-        exitwhen(i > 1)
-        set udg_strings01[i] = ""
-        set udg_integers01[i] = 0
-        set udg_integers02[i] = 0
-        set udg_integers03[i] = 0
-        set udg_integers04[i] = 0
-        set udg_integers05[i] = 0
-        set udg_booleans01[i] = false
-        set udg_integers06[i] = 0
-        set udg_units03[i] = null
-        set udg_integers07[i] = 0
-        set udg_integers08[i] = 0
-        set udg_integers09[i] = 0
-        set udg_integers10[i] = 0
-        set udg_integers11[i] = 0
-        set udg_integers12[i] = 0
-        set udg_booleans02[i] = false
-        set udg_integers13[i] = 0
-        set udg_integers14[i] = 0
-        set udg_integers15[i] = 0
-        set udg_integers16[i] = 0
-        set udg_integers17[i] = 0
-        set udg_integers18[i] = 0
-        set udg_booleans03[i] = false
-        set udg_integers19[i] = 0
-        set udg_integers20[i] = 0
-        set udg_integers21[i] = 0
-        set udg_integers22[i] = 0
-        set udg_integers23[i] = 0
-        set udg_integers24[i] = 0
-        set udg_integers25[i] = 0
-        set udg_integers26[i] = 0
-        set udg_integers27[i] = 0
-        set udg_booleans04[i] = false
-        set udg_integers28[i] = 0
-        set udg_integers29[i] = 0
-        set udg_integers31[i] = 0
-        set i = i + 1
-    endloop
-endfunction
-
-function RegisterChatTrigger takes trigger t returns nothing
-    local integer i = 0
-    loop
-        exitwhen(i > 9)
-        call TriggerRegisterPlayerChatEvent(t, Player(i), "", false)
-        set i = i + 1
-    endloop
-endfunction
-
-function RegisterLeaveTrigger takes trigger t returns nothing
-    local integer i = 0
-    loop
-        exitwhen(i > 9)
-        call TriggerRegisterPlayerEventLeave(t, Player(i))
-        set i = i + 1
-    endloop
-endfunction
-
-function InitializeTriggers takes nothing returns nothing
-    // Tips trigger
-    set udg_trigger05 = CreateTrigger()
-    call TriggerRegisterTimerEventPeriodic(udg_trigger05, 300.)
-    call TriggerAddAction(udg_trigger05, function Trig_Tips_Actions)
-    
-    // Poison ward triggers (L1-L4)
-    set udg_trigger06 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger06, EVENT_PLAYER_UNIT_UPGRADE_START)
-    call TriggerAddCondition(udg_trigger06, Condition(function Trig_poison_ward_l1_Conditions))
-    call TriggerAddAction(udg_trigger06, function Trig_poison_ward_l1_Actions)
-    
-    set udg_trigger07 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger07, EVENT_PLAYER_UNIT_UPGRADE_START)
-    call TriggerAddCondition(udg_trigger07, Condition(function Trig_poison_ward_l2_Conditions))
-    call TriggerAddAction(udg_trigger07, function Trig_poison_ward_l2_Actions)
-    
-    set udg_trigger08 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger08, EVENT_PLAYER_UNIT_UPGRADE_START)
-    call TriggerAddCondition(udg_trigger08, Condition(function Trig_poison_ward_l3_Conditions))
-    call TriggerAddAction(udg_trigger08, function Trig_poison_ward_l3_Actions)
-    
-    set udg_trigger09 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger09, EVENT_PLAYER_UNIT_UPGRADE_START)
-    call TriggerAddCondition(udg_trigger09, Condition(function Trig_poison_ward_l4_Conditions))
-    call TriggerAddAction(udg_trigger09, function Trig_poison_ward_l4_Actions)
-    
-    // Poison ward death triggers
-    set udg_trigger10 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger10, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger10, Condition(function Trig_poison_ward_dies_l1_Conditions))
-    call TriggerAddAction(udg_trigger10, function Trig_poison_ward_dies_l1_Actions)
-    
-    set udg_trigger11 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger11, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger11, Condition(function Trig_poison_ward_dies_l2_Conditions))
-    call TriggerAddAction(udg_trigger11, function Trig_poison_ward_dies_l2_Actions)
-    
-    set udg_trigger12 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger12, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger12, Condition(function Trig_poison_ward_dies_l3_Conditions))
-    call TriggerAddAction(udg_trigger12, function Trig_poison_ward_dies_l3_Actions)
-    
-    set udg_trigger13 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger13, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger13, Condition(function Trig_poison_ward_dies_l4_Conditions))
-    call TriggerAddAction(udg_trigger13, function Trig_poison_ward_dies_l4_Actions)
-    
-    // Other gameplay triggers
-    set udg_trigger14 = CreateTrigger()
-    call TriggerRegisterTimerEventPeriodic(udg_trigger14, 1.)
-    call TriggerAddAction(udg_trigger14, function Trig_Regrow_Trees_Actions)
-    
-    set udg_trigger15 = CreateTrigger()
-    call TriggerRegisterTimerEventSingle(udg_trigger15, 0.0)
-    call TriggerAddAction(udg_trigger15, function Trig_visibility_Actions)
-    
-    // Chat triggers
-    set udg_trigger16 = CreateTrigger()
-    call RegisterChatTrigger(udg_trigger16)
-    call TriggerAddAction(udg_trigger16, function Trig_move_item_Actions)
-    
-    set udg_trigger17 = CreateTrigger()
-    call RegisterChatTrigger(udg_trigger17)
-    call TriggerAddAction(udg_trigger17, function Trig_take_item_Actions)
-    
-    set udg_trigger18 = CreateTrigger()
-    call RegisterChatTrigger(udg_trigger18)
-    call TriggerAddAction(udg_trigger18, function Trig_dropp_pick_items_Actions)
-    
-    // Death/kill triggers
-    set udg_trigger20 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger20, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger20, Condition(function Trig_hero_kill_sansa_carte_animale_Conditions))
-    call TriggerAddAction(udg_trigger20, function Trig_hero_kill_sansa_carte_animale_Actions)
-    
-    set udg_trigger34 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger34, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger34, Condition(function Trig_zombie_kill_effects_Conditions))
-    call TriggerAddAction(udg_trigger34, function Trig_zombie_kill_effects_Actions)
-    
-    // Forest/building triggers
-    set udg_trigger55 = CreateTrigger()
-    call TriggerRegisterEnterRectSimple(udg_trigger55, udg_rect10)
-    call TriggerAddCondition(udg_trigger55, Condition(function Trig_no_build_in_trees_Conditions))
-    call TriggerAddAction(udg_trigger55, function Trig_no_build_in_trees_Actions)
-    
-    set udg_trigger56 = CreateTrigger()
-    call TriggerRegisterEnterRectSimple(udg_trigger56, udg_rect10)
-    call TriggerAddCondition(udg_trigger56, Condition(function Trig_enter_in_padure_Conditions))
-    call TriggerAddAction(udg_trigger56, function Trig_enter_in_padure_Actions)
-    
-    set udg_trigger57 = CreateTrigger()
-    call TriggerRegisterTimerEventSingle(udg_trigger57, 0.0)
-    call TriggerAddAction(udg_trigger57, function Trig_INITIALIZATION_Actions)
-    
-    // Chest triggers
-    set udg_trigger59 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger59, EVENT_PLAYER_UNIT_CONSTRUCT_FINISH)
-    call TriggerAddCondition(udg_trigger59, Condition(function Trig_Chest_enter_Conditions))
-    call TriggerAddAction(udg_trigger59, function Trig_Chest_enter_Actions)
-    
-    set udg_trigger60 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger60, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger60, Condition(function Trig_Chest_dies_Conditions))
-    call TriggerAddAction(udg_trigger60, function Trig_Chest_dies_Actions)
-    
-    // Building/spell triggers
-    set udg_trigger61 = CreateTrigger()
-    call TriggerRegisterEnterRectSimple(udg_trigger61, bj_mapInitialPlayableArea)
-    call TriggerAddCondition(udg_trigger61, Condition(function Trig_gold_mine_build_Conditions))
-    call TriggerAddAction(udg_trigger61, function Trig_gold_mine_build_Actions)
-    
-    set udg_trigger62 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger62, EVENT_PLAYER_UNIT_SPELL_CAST)
-    call TriggerAddCondition(udg_trigger62, Condition(function Trig_Demolisher_Conditions))
-    call TriggerAddAction(udg_trigger62, function Trig_Demolisher_Actions)
-    
-    set udg_trigger63 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger63, EVENT_PLAYER_HERO_SKILL)
-    call TriggerAddCondition(udg_trigger63, Condition(function Trig_take_aim_ability_Conditions))
-    call TriggerAddAction(udg_trigger63, function Trig_take_aim_ability_Actions)
-    
-    set udg_trigger64 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger64, EVENT_PLAYER_UNIT_SELL)
-    call TriggerAddCondition(udg_trigger64, Condition(function Trig_Hero_Sold_Conditions))
-    call TriggerAddAction(udg_trigger64, function Trig_Hero_Sold_Actions)
-    
-    // Timer triggers
-    set udg_trigger65 = CreateTrigger()
-    call DisableTrigger(udg_trigger65)
-    call TriggerRegisterTimerEventPeriodic(udg_trigger65, 1.)
-    call TriggerAddAction(udg_trigger65, function Trig_every_seconds_Actions)
-    
-    // Dialog triggers
-    set udg_trigger67 = CreateTrigger()
-    call TriggerRegisterDialogEvent(udg_trigger67, udg_dialog01)
-    call TriggerAddCondition(udg_trigger67, Condition(function Trig_Clicked_easy_Conditions))
-    call TriggerAddAction(udg_trigger67, function Trig_Clicked_easy_Actions)
-    
-    set udg_trigger68 = CreateTrigger()
-    call TriggerRegisterDialogEvent(udg_trigger68, udg_dialog01)
-    call TriggerAddCondition(udg_trigger68, Condition(function Trig_Clicked_normal_Conditions))
-    call TriggerAddAction(udg_trigger68, function Trig_Clicked_normal_Actions)
-    
-    set udg_trigger69 = CreateTrigger()
-    call TriggerRegisterDialogEvent(udg_trigger69, udg_dialog01)
-    call TriggerAddCondition(udg_trigger69, Condition(function Trig_Clicked_hard_Conditions))
-    call TriggerAddAction(udg_trigger69, function Trig_Clicked_hard_Actions)
-    
-    // Anti-abuse triggers
-    set udg_trigger70 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger70, EVENT_PLAYER_UNIT_ATTACKED)
-    call TriggerAddCondition(udg_trigger70, Condition(function Trig_Anti_Ally_Kills_Conditions))
-    call TriggerAddAction(udg_trigger70, function Trig_Anti_Ally_Kills_Actions)
-    
-    set udg_trigger71 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger71, EVENT_PLAYER_UNIT_ATTACKED)
-    call TriggerAddCondition(udg_trigger71, Condition(function Trig_Anti_hero_kill_Conditions))
-    call TriggerAddAction(udg_trigger71, function Trig_Anti_hero_kill_Actions)
-    
-    // Timer expire triggers
-    set udg_trigger72 = CreateTrigger()
-    call TriggerRegisterTimerExpireEvent(udg_trigger72, udg_timer01)
-    call TriggerAddAction(udg_trigger72, function Trig_Timer_Expire_Actions)
-    
-    set udg_trigger73 = CreateTrigger()
-    call TriggerRegisterTimerExpireEvent(udg_trigger73, udg_timer02)
-    call TriggerAddAction(udg_trigger73, function Trig_LoseTimer_Expire_Actions)
-    
-    set udg_trigger74 = CreateTrigger()
-    call DisableTrigger(udg_trigger74)
-    call TriggerRegisterTimerEventPeriodic(udg_trigger74, 0.1)
-    call TriggerAddAction(udg_trigger74, function Trig_Select_mereu_tavern_la_inceput_Actions)
-    
-    // Zombie/boss triggers
-    set udg_trigger83 = CreateTrigger()
-    call DisableTrigger(udg_trigger83)
-    call TriggerRegisterTimerEventPeriodic(udg_trigger83, 90.)
-    call TriggerAddAction(udg_trigger83, function Trig_Zombie_Upgrade_Actions)
-    
-    set udg_trigger84 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger84, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger84, Condition(function Trig_boss_killed_Conditions))
-    call TriggerAddAction(udg_trigger84, function Trig_boss_killed_Actions)
-    
-    set udg_trigger85 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger85, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger85, Condition(function Trig_Kills_Conditions))
-    call TriggerAddAction(udg_trigger85, function Trig_Kills_Actions)
-    
-    set udg_trigger86 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger86, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger86, Condition(function Trig_Deaths_Conditions))
-    call TriggerAddAction(udg_trigger86, function Trig_Deaths_Actions)
-    
-    // Player leave trigger
-    set udg_trigger90 = CreateTrigger()
-    call RegisterLeaveTrigger(udg_trigger90)
-    call TriggerAddAction(udg_trigger90, function Trig_player_leaves_Actions)
-    
-    // Death/win condition triggers
-    set udg_trigger91 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger91, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger91, Condition(function Trig_builder_dies_Conditions))
-    call TriggerAddAction(udg_trigger91, function Trig_builder_dies_Actions)
-    
-    set udg_trigger92 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger92, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger92, Condition(function Trig_hero_dies_Conditions))
-    call TriggerAddAction(udg_trigger92, function Trig_hero_dies_Actions)
-    
-    set udg_trigger93 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger93, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger93, Condition(function Trig_all_heroes_death_WIN_Conditions))
-    call TriggerAddAction(udg_trigger93, function Trig_all_heroes_death_WIN_Actions)
-    
-    set udg_trigger94 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger94, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger94, Condition(function Trig_statue_dies_WIN_Conditions))
-    call TriggerAddAction(udg_trigger94, function Trig_statue_dies_WIN_Actions)
-    
-    // Building flag triggers
-    set udg_trigger183 = CreateTrigger()
-    call TriggerRegisterEnterRectSimple(udg_trigger183, bj_mapInitialPlayableArea)
-    call TriggerAddCondition(udg_trigger183, Condition(function Trig_build_prima_data_langa_flag_Conditions))
-    call TriggerAddAction(udg_trigger183, function Trig_build_prima_data_langa_flag_Actions)
-    
-    set udg_trigger184 = CreateTrigger()
-    call TriggerRegisterEnterRectSimple(udg_trigger184, bj_mapInitialPlayableArea)
-    call TriggerAddCondition(udg_trigger184, Condition(function Trig_build_prima_data_fara_flag_Conditions))
-    call TriggerAddAction(udg_trigger184, function Trig_build_prima_data_fara_flag_Actions)
-    
-    set udg_trigger185 = CreateTrigger()
-    call TriggerRegisterEnterRectSimple(udg_trigger185, bj_mapInitialPlayableArea)
-    call TriggerAddCondition(udg_trigger185, Condition(function Trig_build_near_flag_Conditions))
-    call TriggerAddAction(udg_trigger185, function Trig_build_near_flag_Actions)
-    
-    set udg_trigger186 = CreateTrigger()
-    call TriggerRegisterTimerEventSingle(udg_trigger186, 0.0)
-    call TriggerAddAction(udg_trigger186, function Trig_flag_limit_Actions)
-    
-    // Endurance aura trigger
-    set udg_trigger211 = CreateTrigger()
-    call TriggerRegisterAnyUnitEventBJ(udg_trigger211, EVENT_PLAYER_UNIT_DEATH)
-    call TriggerAddCondition(udg_trigger211, Condition(function Trig_Endurance_Aura_Conditions))
-    call TriggerAddAction(udg_trigger211, function Trig_Endurance_Aura_Actions)
-    
-    // Environment initialization
-    set udg_trigger224 = CreateTrigger()
-    call TriggerRegisterTimerEventSingle(udg_trigger224, 0.01)
-    call TriggerAddAction(udg_trigger224, function Trig_Init_envi_Actions)
-endfunction
-
 function main2 takes nothing returns nothing
-    local integer i
-    
-    // Initialize camera and environment
-    call SetCameraBounds(-6144.+GetCameraMargin(CAMERA_MARGIN_LEFT), -6144.+GetCameraMargin(CAMERA_MARGIN_BOTTOM), 6144.-GetCameraMargin(CAMERA_MARGIN_RIGHT), 6144.-GetCameraMargin(CAMERA_MARGIN_TOP), -6144.+GetCameraMargin(CAMERA_MARGIN_LEFT), 6144.-GetCameraMargin(CAMERA_MARGIN_TOP), 6144.-GetCameraMargin(CAMERA_MARGIN_RIGHT), -6144.+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
-    call SetDayNightModels("Environment\\DNC\\DNCAshenvale\\DNCAshenvaleTerrain\\DNCAshenvaleTerrain.mdl", "Environment\\DNC\\DNCAshenvale\\DNCAshenvaleUnit\\DNCAshenvaleUnit.mdl")
-    call SetWaterBaseColor(0, 0, 255, 255)
-    call NewSoundEnvironment("Default")
-    call SetAmbientDaySound("AshenvaleDay")
-    call SetAmbientNightSound("AshenvaleNight")
-    call SetMapMusic("Music", true, 0)
-    
-    // Initialize all components
-    call InitializeSounds()
-    call InitializeRects()
-    call InitializeDestructables()
-    call CreateNeutralPassiveBuildings2()
-    call CreatePlayerBuildings2()
-    call InitializeArrays()
-    
-    // Initialize dialogs, timers, and groups
-    set udg_dialog01 = DialogCreate()
-    set udg_timer01 = CreateTimer()
-    set udg_force01 = CreateForce()
-    set udg_group01 = CreateGroup()
-    set udg_dialog02 = DialogCreate()
-    set udg_timer02 = CreateTimer()
-    
-    // Initialize all triggers
-    call InitializeTriggers()
+	local weathereffect we
+	local destructable d
+	local trigger t
+	local real life
+	local integer i
+	call SetCameraBounds(-6144.+GetCameraMargin(CAMERA_MARGIN_LEFT),-6144.+GetCameraMargin(CAMERA_MARGIN_BOTTOM),6144.-GetCameraMargin(CAMERA_MARGIN_RIGHT),6144.-GetCameraMargin(CAMERA_MARGIN_TOP),-6144.+GetCameraMargin(CAMERA_MARGIN_LEFT),6144.-GetCameraMargin(CAMERA_MARGIN_TOP),6144.-GetCameraMargin(CAMERA_MARGIN_RIGHT),-6144.+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+	call SetDayNightModels("Environment\\DNC\\DNCAshenvale\\DNCAshenvaleTerrain\\DNCAshenvaleTerrain.mdl","Environment\\DNC\\DNCAshenvale\\DNCAshenvaleUnit\\DNCAshenvaleUnit.mdl")
+	call SetWaterBaseColor(0,0,$FF,$FF)
+	call NewSoundEnvironment("Default")
+	call SetAmbientDaySound("AshenvaleDay")
+	call SetAmbientNightSound("AshenvaleNight")
+	call SetMapMusic("Music",true,0)
+	set udg_sound01=CreateSound("war3mapImported\\nemesis2.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound01,4365)
+	call SetSoundChannel(udg_sound01,0)
+	call SetSoundVolume(udg_sound01,$7F)
+	call SetSoundPitch(udg_sound01,1.)
+	set udg_sound02=CreateSound("war3mapImported\\timestart.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound02,6922)
+	call SetSoundChannel(udg_sound02,0)
+	call SetSoundVolume(udg_sound02,180)
+	call SetSoundPitch(udg_sound02,1.)
+	set udg_sound03=CreateSound("war3mapImported\\win_humans1.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound03,6145)
+	call SetSoundChannel(udg_sound03,0)
+	call SetSoundVolume(udg_sound03,$7F)
+	call SetSoundPitch(udg_sound03,1.)
+	set udg_sound04=CreateSound("war3mapImported\\zombie_win1.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound04,9297)
+	call SetSoundChannel(udg_sound04,0)
+	call SetSoundVolume(udg_sound04,$7F)
+	call SetSoundPitch(udg_sound04,1.)
+	set udg_sound05=CreateSound("war3mapImported\\zombie_infec1.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound05,$521)
+	call SetSoundChannel(udg_sound05,0)
+	call SetSoundVolume(udg_sound05,$7F)
+	call SetSoundPitch(udg_sound05,1.)
+	set udg_sound06=CreateSound("war3mapImported\\Cuenta_Regresiva.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound06,999)
+	call SetSoundChannel(udg_sound06,0)
+	call SetSoundVolume(udg_sound06,100)
+	call SetSoundPitch(udg_sound06,1.)
+	set udg_sound07=CreateSound("war3mapImported\\BMS_PU1.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound07,999)
+	call SetSoundChannel(udg_sound07,0)
+	call SetSoundVolume(udg_sound07,255)
+	call SetSoundPitch(udg_sound07,1.)
+	set udg_sound08=CreateSound("war3mapImported\\Baron_Darkclaw.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound08,999)
+	call SetSoundChannel(udg_sound08,0)
+	call SetSoundVolume(udg_sound08,255)
+	call SetSoundPitch(udg_sound08,1.)
+	set udg_sound09=CreateSound("war3mapImported\\Humpty_Dumpty.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound09,999)
+	call SetSoundChannel(udg_sound09,0)
+	call SetSoundVolume(udg_sound09,255)
+	call SetSoundPitch(udg_sound09,1.)
+	set udg_sound10=CreateSound("war3mapImported\\Revelations.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound10,999)
+	call SetSoundChannel(udg_sound10,0)
+	call SetSoundVolume(udg_sound10,150)
+	call SetSoundPitch(udg_sound10,1.)
+	set udg_sound11=CreateSound("war3mapImported\\The_Voice_Of_The_Night.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound11,999)
+	call SetSoundChannel(udg_sound11,0)
+	call SetSoundVolume(udg_sound11,150)
+	call SetSoundPitch(udg_sound11,1.)
+	set udg_sound12=CreateSound("war3mapImported\\Gaurhaudh.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound12,999)
+	call SetSoundChannel(udg_sound12,0)
+	call SetSoundVolume(udg_sound12,255)
+	call SetSoundPitch(udg_sound12,1.)
+	set udg_sound13=CreateSound("war3mapImported\\Prospero04.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound13,999)
+	call SetSoundChannel(udg_sound13,0)
+	call SetSoundVolume(udg_sound13,255)
+	call SetSoundPitch(udg_sound13,1.)
+	set udg_sound14=CreateSound("war3mapImported\\Prospero05.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound14,999)
+	call SetSoundChannel(udg_sound14,0)
+	call SetSoundVolume(udg_sound14,255)
+	call SetSoundPitch(udg_sound14,1.)
+	set udg_sound16=CreateSound("war3mapImported\\nemesis2.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound16,4365)
+	call SetSoundChannel(udg_sound16,0)
+	call SetSoundVolume(udg_sound16,$7F)
+	call SetSoundPitch(udg_sound16,1.)
+	set udg_sound17=CreateSound("war3mapImported\\warcry.mp3",false,false,false,$A,$A,"")
+	call SetSoundDuration(udg_sound17,999)
+	call SetSoundChannel(udg_sound17,0)
+	call SetSoundVolume(udg_sound17,145)
+	call SetSoundPitch(udg_sound17,1.)
+
+	// ESTO NO SE TOCA. SON LAS REGIONES DEL BOSQUE 
+	set udg_rect08=Rect(3008.,-6048.,6048.,6048.)
+	set udg_rect10=Rect(2976.,-6144.,6112.,6112.)
+	set udg_rect11=Rect(640.,2624.,2816.,5920.)
+	set udg_rect12=Rect(-6144.,3424.,-4320.,6112.)
+	set udg_rect13=Rect(-6112.,-4256.,-4224.,-1504.)	
+	set udg_destructable05=CreateDestructable('ATtc',-2208.,1120.,270.,1.,1)
+	set udg_destructable03=CreateDestructable('ATtc',-2208.,672.,270.,1.,1)
+	set udg_destructable04=CreateDestructable('ATtc',-3040.,672.,270.,1.,0)
+	set udg_destructable06=CreateDestructable('ATtc',-3040.,1120.,270.,1.,1)
+	
+	set udg_destructable20=CreateDestructable('B000',1772.,5406.,270.,.9,0)	
+	set udg_destructable02=CreateDestructable('LTg1',1856.,3456.,270.,.9,0)
+	set udg_destructable07=CreateDestructable('LTg1',-5184.,4096.,270.,.9,0)
+	set udg_destructable12=CreateDestructable('LTg1',-5312.,-2176.,270.,.9,0)
+	set udg_destructable10=CreateDestructable('LTg1',-5312.,-3712.,270.,.9,0)
+	set udg_destructable08=CreateDestructable('LTg3',-4480.,4544.,.0,.9,0)
+	set udg_destructable11=CreateDestructable('LTg3',-4736.,-2624.,.0,.9,0)
+	set udg_destructable01=CreateDestructable('LTg3',1152.,4544.,.0,.9,0)
+	set udg_destructable09=CreateDestructable('LTg3',-4480.,5312.,.0,.9,0)
+	call CreateNeutralPassiveBuildings2()
+	call CreatePlayerBuildings2()
+	set i=0
+	set i=0
+	loop
+		exitwhen(i>1)
+		set udg_strings01[i]=""
+		set udg_integers01[i]=0
+		set udg_integers02[i]=0
+		set udg_integers03[i]=0
+		set udg_integers04[i]=0
+		set udg_integers05[i]=0
+		set udg_booleans01[i]=false
+		set udg_integers06[i]=0
+		set udg_units03[i]=null
+		set udg_integers07[i]=0
+		set udg_integers08[i]=0
+		set udg_integers09[i]=0
+		set udg_integers10[i]=0
+		set udg_integers11[i]=0
+		set udg_integers12[i]=0
+		set udg_booleans02[i]=false
+		set udg_integers13[i]=0
+		set udg_integers14[i]=0
+		set udg_integers15[i]=0
+		set udg_integers16[i]=0
+		set udg_integers17[i]=0
+		set udg_integers18[i]=0
+		set udg_booleans03[i]=false
+		set udg_integers19[i]=0
+		set udg_integers20[i]=0
+		set udg_integers21[i]=0
+		set udg_integers22[i]=0
+		set udg_integers23[i]=0
+		set udg_integers24[i]=0
+		set udg_integers25[i]=0
+		set udg_integers26[i]=0
+		set udg_integers27[i]=0
+		set udg_booleans04[i]=false
+		set udg_integers28[i]=0
+		set udg_integers29[i]=0
+		set udg_integers31[i]=0
+		set i=i+1
+	endloop
+	set udg_dialog01=DialogCreate()
+	set udg_timer01=CreateTimer()
+	set udg_force01=CreateForce()
+	set udg_group01=CreateGroup()
+	set udg_dialog02=DialogCreate()
+	set udg_timer02=CreateTimer()
+	
+	set udg_trigger05=CreateTrigger()
+	call TriggerRegisterTimerEventPeriodic(udg_trigger05,300.)
+	call TriggerAddAction(udg_trigger05,function Trig_Tips_Actions)
+	set udg_trigger06=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger06,EVENT_PLAYER_UNIT_UPGRADE_START)
+	call TriggerAddCondition(udg_trigger06,Condition(function Trig_poison_ward_l1_Conditions))
+	call TriggerAddAction(udg_trigger06,function Trig_poison_ward_l1_Actions)
+	set udg_trigger07=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger07,EVENT_PLAYER_UNIT_UPGRADE_START)
+	call TriggerAddCondition(udg_trigger07,Condition(function Trig_poison_ward_l2_Conditions))
+	call TriggerAddAction(udg_trigger07,function Trig_poison_ward_l2_Actions)
+	set udg_trigger08=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger08,EVENT_PLAYER_UNIT_UPGRADE_START)
+	call TriggerAddCondition(udg_trigger08,Condition(function Trig_poison_ward_l3_Conditions))
+	call TriggerAddAction(udg_trigger08,function Trig_poison_ward_l3_Actions)
+	set udg_trigger09=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger09,EVENT_PLAYER_UNIT_UPGRADE_START)
+	call TriggerAddCondition(udg_trigger09,Condition(function Trig_poison_ward_l4_Conditions))
+	call TriggerAddAction(udg_trigger09,function Trig_poison_ward_l4_Actions)
+	set udg_trigger10=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger10,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger10,Condition(function Trig_poison_ward_dies_l1_Conditions))
+	call TriggerAddAction(udg_trigger10,function Trig_poison_ward_dies_l1_Actions)
+	set udg_trigger11=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger11,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger11,Condition(function Trig_poison_ward_dies_l2_Conditions))
+	call TriggerAddAction(udg_trigger11,function Trig_poison_ward_dies_l2_Actions)
+	set udg_trigger12=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger12,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger12,Condition(function Trig_poison_ward_dies_l3_Conditions))
+	call TriggerAddAction(udg_trigger12,function Trig_poison_ward_dies_l3_Actions)
+	set udg_trigger13=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger13,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger13,Condition(function Trig_poison_ward_dies_l4_Conditions))
+	call TriggerAddAction(udg_trigger13,function Trig_poison_ward_dies_l4_Actions)
+	set udg_trigger14=CreateTrigger()
+	call TriggerRegisterTimerEventPeriodic(udg_trigger14,1.)
+	call TriggerAddAction(udg_trigger14,function Trig_Regrow_Trees_Actions)
+	set udg_trigger15=CreateTrigger()
+	call TriggerRegisterTimerEventSingle(udg_trigger15,.0)
+	call TriggerAddAction(udg_trigger15,function Trig_visibility_Actions)
+	set udg_trigger16=CreateTrigger()
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(0),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(1),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(2),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(3),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(4),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(5),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(6),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(7),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(8),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger16,Player(9),"",false)
+	call TriggerAddAction(udg_trigger16,function Trig_move_item_Actions)
+	set udg_trigger17=CreateTrigger()
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(0),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(1),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(2),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(3),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(4),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(5),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(6),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(7),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(8),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger17,Player(9),"",false)
+	call TriggerAddAction(udg_trigger17,function Trig_take_item_Actions)
+	set udg_trigger18=CreateTrigger()
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(0),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(1),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(2),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(3),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(4),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(5),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(6),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(7),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(8),"",false)
+	call TriggerRegisterPlayerChatEvent(udg_trigger18,Player(9),"",false)
+	call TriggerAddAction(udg_trigger18,function Trig_dropp_pick_items_Actions)
+	set udg_trigger20=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger20,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger20,Condition(function Trig_hero_kill_sansa_carte_animale_Conditions))
+	call TriggerAddAction(udg_trigger20,function Trig_hero_kill_sansa_carte_animale_Actions)
+
+	set udg_trigger34=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger34,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger34,Condition(function Trig_zombie_kill_effects_Conditions))
+	call TriggerAddAction(udg_trigger34,function Trig_zombie_kill_effects_Actions)
+
+	set udg_trigger55=CreateTrigger()
+	call TriggerRegisterEnterRectSimple(udg_trigger55,udg_rect10)
+	call TriggerAddCondition(udg_trigger55,Condition(function Trig_no_build_in_trees_Conditions))
+	call TriggerAddAction(udg_trigger55,function Trig_no_build_in_trees_Actions)
+	set udg_trigger56=CreateTrigger()
+	call TriggerRegisterEnterRectSimple(udg_trigger56,udg_rect10)
+	call TriggerAddCondition(udg_trigger56,Condition(function Trig_enter_in_padure_Conditions))
+	call TriggerAddAction(udg_trigger56,function Trig_enter_in_padure_Actions)
+	set udg_trigger57=CreateTrigger()
+	call TriggerRegisterTimerEventSingle(udg_trigger57,.0)
+	call TriggerAddAction(udg_trigger57,function Trig_INITIALIZATION_Actions)
+
+	set udg_trigger59=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger59,EVENT_PLAYER_UNIT_CONSTRUCT_FINISH)
+	call TriggerAddCondition(udg_trigger59,Condition(function Trig_Chest_enter_Conditions))
+	call TriggerAddAction(udg_trigger59,function Trig_Chest_enter_Actions)
+	set udg_trigger60=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger60,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger60,Condition(function Trig_Chest_dies_Conditions))
+	call TriggerAddAction(udg_trigger60,function Trig_Chest_dies_Actions)
+	set udg_trigger61=CreateTrigger()
+	call TriggerRegisterEnterRectSimple(udg_trigger61,bj_mapInitialPlayableArea)
+	call TriggerAddCondition(udg_trigger61,Condition(function Trig_gold_mine_build_Conditions))
+	call TriggerAddAction(udg_trigger61,function Trig_gold_mine_build_Actions)
+	set udg_trigger62=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger62,EVENT_PLAYER_UNIT_SPELL_CAST)
+	call TriggerAddCondition(udg_trigger62,Condition(function Trig_Demolisher_Conditions))
+	call TriggerAddAction(udg_trigger62,function Trig_Demolisher_Actions)
+	set udg_trigger63=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger63,EVENT_PLAYER_HERO_SKILL)
+	call TriggerAddCondition(udg_trigger63,Condition(function Trig_take_aim_ability_Conditions))
+	call TriggerAddAction(udg_trigger63,function Trig_take_aim_ability_Actions)
+	set udg_trigger64=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger64,EVENT_PLAYER_UNIT_SELL)
+	call TriggerAddCondition(udg_trigger64,Condition(function Trig_Hero_Sold_Conditions))
+	call TriggerAddAction(udg_trigger64,function Trig_Hero_Sold_Actions)
+	set udg_trigger65=CreateTrigger()
+	call DisableTrigger(udg_trigger65)
+	call TriggerRegisterTimerEventPeriodic(udg_trigger65,1.)
+	call TriggerAddAction(udg_trigger65,function Trig_every_seconds_Actions)
+	set udg_trigger67=CreateTrigger()
+	call TriggerRegisterDialogEvent(udg_trigger67,udg_dialog01)
+	call TriggerAddCondition(udg_trigger67,Condition(function Trig_Clicked_easy_Conditions))
+	call TriggerAddAction(udg_trigger67,function Trig_Clicked_easy_Actions)
+	set udg_trigger68=CreateTrigger()
+	call TriggerRegisterDialogEvent(udg_trigger68,udg_dialog01)
+	call TriggerAddCondition(udg_trigger68,Condition(function Trig_Clicked_normal_Conditions))
+	call TriggerAddAction(udg_trigger68,function Trig_Clicked_normal_Actions)
+	set udg_trigger69=CreateTrigger()
+	call TriggerRegisterDialogEvent(udg_trigger69,udg_dialog01)
+	call TriggerAddCondition(udg_trigger69,Condition(function Trig_Clicked_hard_Conditions))
+	call TriggerAddAction(udg_trigger69,function Trig_Clicked_hard_Actions)
+	set udg_trigger70=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger70,EVENT_PLAYER_UNIT_ATTACKED)
+	call TriggerAddCondition(udg_trigger70,Condition(function Trig_Anti_Ally_Kills_Conditions))
+	call TriggerAddAction(udg_trigger70,function Trig_Anti_Ally_Kills_Actions)
+	set udg_trigger71=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger71,EVENT_PLAYER_UNIT_ATTACKED)
+	call TriggerAddCondition(udg_trigger71,Condition(function Trig_Anti_hero_kill_Conditions))
+	call TriggerAddAction(udg_trigger71,function Trig_Anti_hero_kill_Actions)
+	set udg_trigger72=CreateTrigger()
+	call TriggerRegisterTimerExpireEvent(udg_trigger72,udg_timer01)
+	call TriggerAddAction(udg_trigger72,function Trig_Timer_Expire_Actions)
+	set udg_trigger73=CreateTrigger()
+	call TriggerRegisterTimerExpireEvent(udg_trigger73,udg_timer02)
+	call TriggerAddAction(udg_trigger73,function Trig_LoseTimer_Expire_Actions)
+	set udg_trigger74=CreateTrigger()
+	call DisableTrigger(udg_trigger74)
+	call TriggerRegisterTimerEventPeriodic(udg_trigger74,.1)
+	call TriggerAddAction(udg_trigger74,function Trig_Select_mereu_tavern_la_inceput_Actions)
+		
+	// =============================================== 													TODO ESTO ES DE LA FUNCION "main2"
+
+	set udg_trigger83=CreateTrigger()
+	call DisableTrigger(udg_trigger83)
+	call TriggerRegisterTimerEventPeriodic(udg_trigger83,90.)
+	call TriggerAddAction(udg_trigger83,function Trig_Zombie_Upgrade_Actions)
+	set udg_trigger84=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger84,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger84,Condition(function Trig_boss_killed_Conditions))
+	call TriggerAddAction(udg_trigger84,function Trig_boss_killed_Actions)
+	set udg_trigger85=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger85,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger85,Condition(function Trig_Kills_Conditions))
+	call TriggerAddAction(udg_trigger85,function Trig_Kills_Actions)
+	set udg_trigger86=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger86,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger86,Condition(function Trig_Deaths_Conditions))
+	call TriggerAddAction(udg_trigger86,function Trig_Deaths_Actions)
+
+	set udg_trigger90=CreateTrigger()
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(0))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(1))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(2))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(3))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(4))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(5))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(6))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(7))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(8))
+	call TriggerRegisterPlayerEventLeave(udg_trigger90,Player(9))
+	call TriggerAddAction(udg_trigger90,function Trig_player_leaves_Actions)
+	set udg_trigger91=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger91,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger91,Condition(function Trig_builder_dies_Conditions))
+	call TriggerAddAction(udg_trigger91,function Trig_builder_dies_Actions)
+	set udg_trigger92=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger92,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger92,Condition(function Trig_hero_dies_Conditions))
+	call TriggerAddAction(udg_trigger92,function Trig_hero_dies_Actions)
+	set udg_trigger93=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger93,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger93,Condition(function Trig_all_heroes_death_WIN_Conditions))
+	call TriggerAddAction(udg_trigger93,function Trig_all_heroes_death_WIN_Actions)
+	set udg_trigger94=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger94,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger94,Condition(function Trig_statue_dies_WIN_Conditions))
+	call TriggerAddAction(udg_trigger94,function Trig_statue_dies_WIN_Actions)	
+
+	set udg_trigger183=CreateTrigger()
+	call TriggerRegisterEnterRectSimple(udg_trigger183,bj_mapInitialPlayableArea)
+	call TriggerAddCondition(udg_trigger183,Condition(function Trig_build_prima_data_langa_flag_Conditions))
+	call TriggerAddAction(udg_trigger183,function Trig_build_prima_data_langa_flag_Actions)
+	set udg_trigger184=CreateTrigger()
+	call TriggerRegisterEnterRectSimple(udg_trigger184,bj_mapInitialPlayableArea)
+	call TriggerAddCondition(udg_trigger184,Condition(function Trig_build_prima_data_fara_flag_Conditions))
+	call TriggerAddAction(udg_trigger184,function Trig_build_prima_data_fara_flag_Actions)
+	set udg_trigger185=CreateTrigger()
+	call TriggerRegisterEnterRectSimple(udg_trigger185,bj_mapInitialPlayableArea)
+	call TriggerAddCondition(udg_trigger185,Condition(function Trig_build_near_flag_Conditions))
+	call TriggerAddAction(udg_trigger185,function Trig_build_near_flag_Actions)
+	set udg_trigger186=CreateTrigger()
+	call TriggerRegisterTimerEventSingle(udg_trigger186,.0)
+	call TriggerAddAction(udg_trigger186,function Trig_flag_limit_Actions)
+
+	set udg_trigger211=CreateTrigger()
+	call TriggerRegisterAnyUnitEventBJ(udg_trigger211,EVENT_PLAYER_UNIT_DEATH)
+	call TriggerAddCondition(udg_trigger211,Condition(function Trig_Endurance_Aura_Conditions))
+	call TriggerAddAction(udg_trigger211,function Trig_Endurance_Aura_Actions)
+
+	set udg_trigger224=CreateTrigger()
+	call TriggerRegisterTimerEventSingle(udg_trigger224,.01)
+	call TriggerAddAction(udg_trigger224,function Trig_Init_envi_Actions)
 endfunction
 
-function InitTrig_init takes nothing returns nothing    
-    call ExecuteFunc("main2")
+function InitTrig_init takes nothing returns nothing	
+	call ExecuteFunc("main2")
 endfunction
